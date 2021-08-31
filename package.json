@@ -1,0 +1,41 @@
+{
+  "name": "eslint-plugins",
+  "version": "1.0.0",
+  "description": "ESLint Plugins",
+  "keywords": [
+    "eslint",
+    "plugins",
+    "eslint-plugins"
+  ],
+  "homepage": "https://github.com/chiefmikey/eslint-plugins#readme",
+  "bugs": {
+    "url": "https://github.com/chiefmikey/eslint-plugins/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chiefmikey/eslint-plugins.git"
+  },
+  "license": "MIT",
+  "author": "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)",
+  "contributors": [
+    "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)"
+  ],
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-compat": "^3.13.0",
+    "eslint-plugin-css-modules": "^2.11.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-json": "^3.1.0",
+    "eslint-plugin-json-format": "^2.0.1",
+    "eslint-plugin-md": "^1.0.19",
+    "eslint-plugin-prettier": "^3.4.1",
+    "eslint-plugin-sonar": "^0.6.1",
+    "prettier": "^2.3.2",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^22.0.0",
+    "stylelint-order": "^4.1.0"
+  }
+}
