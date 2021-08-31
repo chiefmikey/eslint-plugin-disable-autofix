@@ -1,4 +1,4 @@
-# eslint-plugin-no-autofix-2
+# No Autofix 2
 
 Disable ESLint autofix (--fix) for specified rules
 
