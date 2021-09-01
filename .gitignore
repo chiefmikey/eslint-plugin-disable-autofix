@@ -2,7 +2,7 @@
 .DS_Store
 
 # VS Code directory
-.vscode
+# .vscode
 
 # Logs
 logs
