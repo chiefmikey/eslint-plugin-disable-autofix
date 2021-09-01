@@ -7,7 +7,7 @@
   <tbody>
     <tr>
       <td valign="top">
-        <a href="./no-autofix-2">No Autofix 2</a>
+        <a href="./disable-autofix">Disable Autofix</a>
       </td>
     </tr>
   </tbody>
