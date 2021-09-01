@@ -1,0 +1,29 @@
+{
+  "name": "eslint-plugin-disable-autofix",
+  "version": "0.1.1",
+  "description": "Disable ESLint autofix (--fix) for specified rules",
+  "keywords": [
+    "eslint",
+    "plugin",
+    "disable",
+    "autofix",
+    "auto-fix",
+    "auto",
+    "fix",
+    "--fix"
+  ],
+  "homepage": "https://github.com/chiefmikey/eslint-plugins/tree/main/packages/disable-autofix",
+  "bugs": "https://github.com/chiefmikey/eslint-plugins/issues",
+  "repository": "https://github.com/chiefmikey/eslint-plugins/tree/main/packages/disable-autofix",
+  "license": "MIT",
+  "author": "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)",
+  "contributors": [
+    "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)",
+    "薛定谔的猫 <weiran.zsd@outlook.com>"
+  ],
+  "main": "./lib/index.cjs",
+  "dependencies": {
+    "eslint": "^7.32.0",
+    "eslint-rule-composer": "^0.3.0"
+  }
+}
