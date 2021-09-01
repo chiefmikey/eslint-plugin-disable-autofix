@@ -37,10 +37,10 @@ Use 3rd-party plugins:
 
 ```js
 module.exports = {
-  plugins: ['no-autofix', 'react'],
+  plugins: ['no-autofix-2', 'react'],
   rules: {
     'react/jsx-indent': 'off',
-    'no-autofix/react/jsx-indent': 'error',
+    'no-autofix-2/react/jsx-indent': 'error',
   },
 };
 ```
@@ -49,7 +49,7 @@ Use scoped plugins:
 
 ```js
 module.exports = {
-  plugins: ['no-autofix', '@html-eslint'],
+  plugins: ['no-autofix-2', '@html-eslint'],
   rules: {
     '@html-eslint/require-closing-tags': 'off',
     'no-autofix-2/@html-eslint/require-closing-tags': [
