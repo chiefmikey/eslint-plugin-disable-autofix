@@ -7,25 +7,18 @@ const linter = new eslint.Linter();
 const rules = {};
 const builtInRules = {};
 
-// const eslintRulesPath = __dirname
-
 const builtIn = fs
   .readdirSync(path.join(__dirname, '../../eslint/lib/rules'))
   .filter((it) => it.includes('.js'));
 
 for (let i = 0; i < builtIn.length; i += 1) {
-  const loadRule = () => {
-    const importedRule = require(path.join(
-      __dirname,
-      '../../eslint/lib/rules/',
-      builtIn[i],
-    ));
-    builtInRules[builtIn[i]] = importedRule;
-  };
-  loadRule();
+  const importedRule = require(path.join(
+    __dirname,
+    '../../eslint/lib/rules/',
+    builtIn[i],
+  ));
+  builtInRules[builtIn[i]] = importedRule;
 }
-
-// path.join(__dirname, '../../eslint/lib/rules');
 
 Object.keys(builtInRules).reduce((acc, cur) => {
   const rule = linter.getRules().get(cur);
@@ -51,7 +44,7 @@ plugins.forEach((it) => {
     [pluginName] = it.split('/');
     const pluginDirectory = fs
       .readdirSync(path.join(__dirname, '../../', it))
-      .filter((it) => /plugin/u.test(it));
+      .filter((read) => /plugin/u.test(read));
     copyIt = path.join(__dirname, '../../', it, pluginDirectory[0]);
   } else {
     pluginName = it.replace(/^eslint-plugin-/u, '');
@@ -72,7 +65,6 @@ const all = {
   rules: {},
 };
 
-// turn on plugin rules
 Object.keys(rules).reduce(
   (theRules, ruleName) =>
     Object.assign(theRules, { [`${PLUGIN_NAME}/${ruleName}`]: 'error' }),
