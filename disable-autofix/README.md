@@ -14,8 +14,8 @@ and extends compatibility to scoped packages_
 ### Install
 
 ```shell
-npm i eslint-plugin-disable-autofix -D
-yarn add eslint-plugin-disable-autofix -D
+npm i -D eslint-plugin-disable-autofix
+yarn add -D eslint-plugin-disable-autofix
 ```
 
 ### Configure
