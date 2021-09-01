@@ -21,6 +21,8 @@
     "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)"
   ],
   "devDependencies": {
+    "@html-eslint/eslint-plugin": "^0.11.0",
+    "@html-eslint/parser": "^0.11.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
@@ -31,7 +33,7 @@
     "eslint-plugin-json": "^3.1.0",
     "eslint-plugin-json-format": "^2.0.1",
     "eslint-plugin-md": "^1.0.19",
-    "eslint-plugin-prettier": "^3.4.1",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-sonar": "^0.6.1",
     "prettier": "^2.3.2",
     "stylelint": "^13.13.1",
