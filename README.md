@@ -15,6 +15,7 @@ and extends compatibility to scoped packages_
 
 ```shell
 npm i -D eslint-plugin-disable-autofix
+
 yarn add -D eslint-plugin-disable-autofix
 ```
 
