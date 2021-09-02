@@ -21,7 +21,7 @@ yarn add -D eslint-plugin-disable-autofix
 
 ### Configure
 
-Add prefix 'disable-autofix/' to the rule name in eslintrc and disable the
+Add prefix `'disable-autofix/'` to the rule name in eslintrc and disable the
 original:
 
 ```js
