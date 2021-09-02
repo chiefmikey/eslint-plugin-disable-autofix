@@ -24,7 +24,7 @@ body:
       description: Also tell us, what did you expect to happen?
     validations:
       required: true
-  - type: textarea
+  - type: input
     id: version
     attributes:
       label: Version
