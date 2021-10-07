@@ -1,6 +1,10 @@
 # eslint-plugin-disable-autofix
 
-Disable ESLint autofix (--fix) for specified rules
+Disable ESLint autofix (--fix) for specified rules and prevent them from being
+formatted without turning them off
+
+Useful when two different rules have the same solution resulting in duplicate
+formatting
 
 Supports [all eslint core rules](https://eslint.org/docs/rules/) and 3rd-party
 plugins (_including_ scoped packages)
@@ -15,14 +19,12 @@ and extends compatibility to scoped packages_
 
 ```shell
 npm i -D eslint-plugin-disable-autofix
-
-yarn add -D eslint-plugin-disable-autofix
 ```
 
 ### Configure
 
 Add prefix `disable-autofix/` to the rule name in eslintrc and disable the
-original:
+original
 
 ```js
 module.exports = {
@@ -34,7 +36,7 @@ module.exports = {
 };
 ```
 
-Use 3rd-party plugins:
+Use 3rd-party plugins
 
 ```js
 module.exports = {
@@ -46,7 +48,7 @@ module.exports = {
 };
 ```
 
-Use scoped plugins:
+Use scoped plugins
 
 ```js
 module.exports = {
