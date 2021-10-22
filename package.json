@@ -32,7 +32,7 @@
     "LICENSE"
   ],
   "dependencies": {
-    "eslint": "^8.0.1",
+    "eslint": "^7.5.0",
     "eslint-rule-composer": "^0.3.0"
   }
 }
