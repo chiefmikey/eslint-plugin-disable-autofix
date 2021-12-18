@@ -22,8 +22,7 @@ for (const element of builtIn) {
 }
 
 for (const rule of await Promise.all(promises)) {
-  console.log(rule);
-  builtInRules[element as keyof typeof builtInRules] = rule;
+  builtInRules[rule.id as keyof typeof builtInRules] = rule;
 }
 
 Object.keys(builtInRules).reduce((accumulator, current) => {
