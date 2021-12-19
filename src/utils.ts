@@ -1,10 +1,10 @@
 import eslint from 'eslint';
 import ruleComposer from 'eslint-rule-composer';
 
-const map: MapReports = ruleComposer.mapReports;
+const map = (ruleComposer as { mapReports: MapReports }).mapReports;
 
 const getNonFixableRule = (rule: eslint.Rule.RuleModule) => {
-  return map(Object.create(rule), (problem) => ((problem.fix = null), problem));
+  return map(rule, (problem) => ((problem.fix = undefined), problem));
 };
 
 export default getNonFixableRule;

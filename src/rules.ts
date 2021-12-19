@@ -25,7 +25,7 @@ for (const rule of await Promise.all(promises)) {
   builtInRules[rule.id as keyof typeof builtInRules] = rule;
 }
 
-Object.keys(builtInRules).reduce((accumulator, current) => {
+const reducer1 = Object.keys(builtInRules).reduce((accumulator, current) => {
   const rule = linter.getRules().get(current);
   if (rule) {
     accumulator[current] = getNonFixableRule(rule);
@@ -43,11 +43,11 @@ const plugins = fs
       it !== '@eslint',
   );
 
-const importedPlugins = [];
+const importedPlugins: Promise<NodeModule>[] = [];
+let pluginName: string;
 
 for (const it of plugins) {
   let copyIt = it;
-  let pluginName;
   if (it.includes('@')) {
     [pluginName] = it.split('/');
     const pluginDirectory = fs
@@ -59,13 +59,15 @@ for (const it of plugins) {
   } else {
     pluginName = it.replace(/^eslint-plugin-/u, '');
   }
-  importedPlugins.push(import(copyIt));
+  importedPlugins.push(import(copyIt) as Promise<NodeModule>);
 }
 
 for (const plugin of await Promise.all(importedPlugins)) {
   for (const rule of Object.keys(plugin.rules || {})) {
     if (rule) {
-      rules[`${pluginName}/${rule}`] = getNonFixableRule(plugin.rules[rule]);
+      rules[`${pluginName}/${rule}` as keyof typeof rules] = getNonFixableRule(
+        plugin.rules[rule as keyof typeof plugin.rules],
+      );
     }
   }
 }
@@ -77,7 +79,7 @@ export const all = {
   rules: {},
 };
 
-Object.keys(rules).reduce(
+const reducer2 = Object.keys(rules).reduce(
   (theRules, ruleName) =>
     Object.assign(theRules, { [`${PLUGIN_NAME}/${ruleName}`]: 'error' }),
   all.rules,
