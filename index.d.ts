@@ -5,9 +5,7 @@ interface Problem {
   messageId: string | null;
   data: object | null;
   loc: eslint.AST.SourceLocation;
-  fix?(
-    fixer: eslint.Rule.RuleFixer,
-  ): null | eslint.Rule.Fix | eslint.Rule.Fix[];
+  fix?: undefined;
 }
 
 interface Metadata {
