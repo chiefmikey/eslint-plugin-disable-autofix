@@ -5,7 +5,7 @@ import path from 'node:path';
 import getNonFixableRule from './utils';
 
 const linter = new eslint.Linter();
-export const rules = {};
+export const rules: { rule?: eslint.Rule.RuleModule } = {};
 const builtInRules: { property?: NodeModule } = {};
 const promises: Promise<NodeModule>[] = [];
 
@@ -28,7 +28,7 @@ for (const rule of await Promise.all(promises)) {
 const reducer1 = Object.keys(builtInRules).reduce((accumulator, current) => {
   const rule = linter.getRules().get(current);
   if (rule) {
-    accumulator[current] = getNonFixableRule(rule);
+    accumulator[current as keyof typeof accumulator] = getNonFixableRule(rule);
   }
   return accumulator;
 }, rules);
