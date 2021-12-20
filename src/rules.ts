@@ -5,35 +5,34 @@ import path from 'node:path';
 import getNonFixableRule from './utils';
 
 const linter = new eslint.Linter();
-export const rules: { rule?: eslint.Rule.RuleModule } = {};
-const builtInRules: { property?: NodeModule } = {};
-const promises: Promise<NodeModule>[] = [];
+export const allRules: { rule?: eslint.Rule.RuleModule } = {};
+const builtIns: { property?: NodeModule } = {};
+const importedBuiltIns: Promise<NodeModule>[] = [];
 
-const builtIn = fs
+const getBuiltin = fs
   .readdirSync(path.join(path.resolve(), '../../eslint/lib/rules'))
   .filter((it) => it.includes('.js'));
 
-for (const element of builtIn) {
-  promises.push(
+for (const builtIn of getBuiltin) {
+  importedBuiltIns.push(
     import(
-      path.join(path.resolve(), '../../eslint/lib/rules/', element)
+      path.join(path.resolve(), '../../eslint/lib/rules/', builtIn)
     ) as Promise<NodeModule>,
   );
 }
 
-for (const rule of await Promise.all(promises)) {
-  builtInRules[rule.id as keyof typeof builtInRules] = rule;
+for (const rule of await Promise.all(importedBuiltIns)) {
+  builtIns[rule.id as keyof typeof builtIns] = rule;
 }
 
-const reducer1 = Object.keys(builtInRules).reduce((accumulator, current) => {
+for (const current of Object.keys(builtIns)) {
   const rule = linter.getRules().get(current);
   if (rule) {
-    accumulator[current as keyof typeof accumulator] = getNonFixableRule(rule);
+    allRules[current as keyof typeof allRules] = getNonFixableRule(rule);
   }
-  return accumulator;
-}, rules);
+}
 
-const plugins = fs
+const getPlugins = fs
   .readdirSync(path.join(path.resolve(), '../../'))
   .filter(
     (it) =>
@@ -44,30 +43,28 @@ const plugins = fs
   );
 
 const importedPlugins: Promise<NodeModule>[] = [];
-let pluginName: string;
 
-for (const it of plugins) {
-  let copyIt = it;
-  if (it.includes('@')) {
-    [pluginName] = it.split('/');
+for (const plugin of getPlugins) {
+  let copyIt = plugin;
+  if (plugin.includes('@')) {
     const pluginDirectory = fs
-      .readdirSync(path.join(path.resolve(), '../../', it))
+      .readdirSync(path.join(path.resolve(), '../../', plugin))
       .find((read) => /plugin/u.test(read));
     if (pluginDirectory) {
-      copyIt = path.join(path.resolve(), '../../', it, pluginDirectory);
+      copyIt = path.join(path.resolve(), '../../', plugin, pluginDirectory);
     }
-  } else {
-    pluginName = it.replace(/^eslint-plugin-/u, '');
   }
   importedPlugins.push(import(copyIt) as Promise<NodeModule>);
 }
 
 for (const plugin of await Promise.all(importedPlugins)) {
+  const pluginName = plugin.id.includes('@')
+    ? plugin.id.split('/')[0]
+    : plugin.id.replace(/^eslint-plugin-/u, '');
   for (const rule of Object.keys(plugin.rules || {})) {
     if (rule) {
-      rules[`${pluginName}/${rule}` as keyof typeof rules] = getNonFixableRule(
-        plugin.rules[rule as keyof typeof plugin.rules],
-      );
+      allRules[`${pluginName}/${rule}` as keyof typeof allRules] =
+        getNonFixableRule(plugin.rules[rule as keyof typeof plugin.rules]);
     }
   }
 }
@@ -76,7 +73,7 @@ const PLUGIN_NAME = 'disable-autofix';
 
 export const all = {
   plugins: [PLUGIN_NAME],
-  rules: {},
+  allRules: {},
 };
 
 const reducer2 = Object.keys(rules).reduce(
