@@ -5,8 +5,8 @@ import path from 'node:path';
 import getNonFixableRule from './utils';
 
 const linter = new eslint.Linter();
-export const allRules: { rule?: eslint.Rule.RuleModule } = {};
-const builtIns: { property?: NodeModule } = {};
+export const allRules: { [key: string]: eslint.Rule.RuleModule } = {};
+const builtIns: { [key: string]: NodeModule } = {};
 const importedBuiltIns: Promise<NodeModule>[] = [];
 
 const getBuiltin = fs
