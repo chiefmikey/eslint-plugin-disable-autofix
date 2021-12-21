@@ -1,8 +1,8 @@
-import { all, rules } from './rules';
+import { all, allRules } from './rules';
 
 export default {
   configs: {
     all,
   },
-  rules,
+  allRules,
 };
