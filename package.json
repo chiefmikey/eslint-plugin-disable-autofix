@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Disable ESLint autofix (--fix) for specified rules",
   "main": "./lib/index.js",
+  "scripts": {
+    "tsc": "tsc"
+  },
   "dependencies": {
     "eslint": "^8.5.0",
     "eslint-rule-composer": "^0.3.0"
