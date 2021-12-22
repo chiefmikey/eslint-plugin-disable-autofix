@@ -76,8 +76,6 @@ export const all = {
   allRules: {},
 };
 
-const reducer2 = Object.keys(rules).reduce(
-  (theRules, ruleName) =>
-    Object.assign(theRules, { [`${PLUGIN_NAME}/${ruleName}`]: 'error' }),
-  all.rules,
-);
+for (const rule of Object.keys(allRules)) {
+  Object.assign(all.allRules, { [`${PLUGIN_NAME}/${rule}`]: 'error' });
+}
