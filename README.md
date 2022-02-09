@@ -3,11 +3,8 @@
 Disable ESLint autofix (--fix) for specified rules and prevent them from being
 formatted without turning them off
 
-Useful when two different rules have the same solution resulting in duplicate
-formatting
-
-Supports [all eslint core rules](https://eslint.org/docs/rules/) and 3rd-party
-plugins
+_Useful when two different rules have the same solution resulting in duplicate
+formatting_
 
 ## Usage
 
