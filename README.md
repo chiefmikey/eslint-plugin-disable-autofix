@@ -7,11 +7,7 @@ Useful when two different rules have the same solution resulting in duplicate
 formatting
 
 Supports [all eslint core rules](https://eslint.org/docs/rules/) and 3rd-party
-plugins (_including_ scoped packages)
-
-_This plugin is built from
-[eslint-plugin-no-autofix](https://github.com/aladdin-add/eslint-plugin/tree/master/packages/no-autofix)
-and extends compatibility to scoped packages_
+plugins
 
 ## Usage
 
