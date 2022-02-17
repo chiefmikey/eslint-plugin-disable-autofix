@@ -56,7 +56,7 @@ module.exports = {
 };
 ```
 
-## Depends on
+## Resources
 
 - [ESLint](https://eslint.org)
 - [eslint-rule-composer](https://github.com/not-an-aardvark/eslint-rule-composer)
