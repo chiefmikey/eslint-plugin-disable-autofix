@@ -11,13 +11,13 @@ const builtIns: { [key: string]: NodeModule } = {};
 const importedBuiltIns: Promise<NodeModule>[] = [];
 
 const getBuiltIn = fs
-  .readdirSync(path.join(path.resolve(), '/node_modules/eslint/lib/rules'))
+  .readdirSync(path.join(path.resolve(), 'node_modules/eslint/lib/rules'))
   .filter((builtIn) => builtIn.includes('.js'));
 
 for (const builtIn of getBuiltIn) {
   importedBuiltIns.push(
     import(
-      path.join(path.resolve(), '/node_modules/eslint/lib/rules/', builtIn)
+      path.join(path.resolve(), 'node_modules/eslint/lib/rules/', builtIn)
     ) as Promise<NodeModule>,
   );
 }
@@ -37,7 +37,7 @@ for (const current of Object.keys(builtIns)) {
 }
 
 const getPlugins = fs
-  .readdirSync(path.join(path.resolve(), '/node_modules/'))
+  .readdirSync(path.join(path.resolve(), 'node_modules/'))
   .filter(
     (plugin) =>
       (plugin.startsWith('eslint-plugin') ||
@@ -52,10 +52,10 @@ for (const plugin of getPlugins) {
   let copyIt = plugin;
   if (plugin.includes('@')) {
     const pluginDirectory = fs
-      .readdirSync(path.join(path.resolve(), '/node_modules/', plugin))
+      .readdirSync(path.join(path.resolve(), 'node_modules/', plugin))
       .find((read) => /plugin/u.test(read));
     if (pluginDirectory) {
-      copyIt = path.join(path.resolve(), '/node_modules/', plugin, pluginDirectory);
+      copyIt = path.join(path.resolve(), 'node_modules/', plugin, pluginDirectory);
     }
   }
   importedPlugins.push(import(copyIt) as Promise<NodeModule>);
