@@ -2,7 +2,7 @@
   "compilerOptions": {
     "lib": ["es2021", "DOM", "DOM.Iterable"],
     "moduleResolution": "node",
-    "module": "esnext",
+    "module": "commonjs",
     "target": "es2017",
     "sourceMap": false,
     "allowJs": true,
