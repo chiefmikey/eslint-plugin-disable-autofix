@@ -22,9 +22,12 @@ for (const builtIn of getBuiltIn) {
   );
 }
 
-for (const rule of await Promise.all(importedBuiltIns)) {
-  builtIns[rule.id as keyof typeof builtIns] = rule;
-}
+const getAllRules = async () => {
+  for (const rule of await Promise.all(importedBuiltIns)) {
+    builtIns[rule.id as keyof typeof builtIns] = rule;
+  }
+};
+getAllRules();
 
 for (const current of Object.keys(builtIns)) {
   const rule = linter.getRules().get(current);
@@ -58,18 +61,21 @@ for (const plugin of getPlugins) {
   importedPlugins.push(import(copyIt) as Promise<NodeModule>);
 }
 
-for (const plugin of await Promise.all(importedPlugins)) {
-  console.log(plugin);
-  const pluginName = plugin.id.includes('@')
-    ? plugin.id.split('/')[0]
-    : plugin.id.replace(/^eslint-plugin-/u, '');
-  for (const rule of Object.keys(plugin.rules || {})) {
-    if (rule) {
-      allRules[`${pluginName}/${rule}` as keyof typeof allRules] =
-        getNonFixableRule(plugin.rules[rule as keyof typeof plugin.rules]);
+const getAllPlugins = async () => {
+  for (const plugin of await Promise.all(importedPlugins)) {
+    console.log(plugin);
+    const pluginName = plugin.id.includes('@')
+      ? plugin.id.split('/')[0]
+      : plugin.id.replace(/^eslint-plugin-/u, '');
+    for (const rule of Object.keys(plugin.rules || {})) {
+      if (rule) {
+        allRules[`${pluginName}/${rule}` as keyof typeof allRules] =
+          getNonFixableRule(plugin.rules[rule as keyof typeof plugin.rules]);
+      }
     }
   }
-}
+};
+getAllPlugins();
 
 const PLUGIN_NAME = 'disable-autofix';
 
