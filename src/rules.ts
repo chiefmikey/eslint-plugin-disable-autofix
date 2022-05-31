@@ -1,6 +1,7 @@
-import eslint from 'eslint';
 import fs from 'node:fs';
 import path from 'node:path';
+
+import eslint from 'eslint';
 
 import getNonFixableRule from './utils';
 
@@ -9,11 +10,11 @@ export const allRules: { [key: string]: eslint.Rule.RuleModule } = {};
 const builtIns: { [key: string]: NodeModule } = {};
 const importedBuiltIns: Promise<NodeModule>[] = [];
 
-const getBuiltin = fs
+const getBuiltIn = fs
   .readdirSync(path.join(path.resolve(), '../../eslint/lib/rules'))
-  .filter((it) => it.includes('.js'));
+  .filter((builtIn) => builtIn.includes('.js'));
 
-for (const builtIn of getBuiltin) {
+for (const builtIn of getBuiltIn) {
   importedBuiltIns.push(
     import(
       path.join(path.resolve(), '../../eslint/lib/rules/', builtIn)
@@ -35,11 +36,11 @@ for (const current of Object.keys(builtIns)) {
 const getPlugins = fs
   .readdirSync(path.join(path.resolve(), '../../'))
   .filter(
-    (it) =>
-      (it.startsWith('eslint-plugin') ||
-        (it.startsWith('@') && /eslint/u.test(it))) &&
-      it !== 'eslint-plugin-disable-autofix' &&
-      it !== '@eslint',
+    (plugin) =>
+      (plugin.startsWith('eslint-plugin') ||
+        (plugin.startsWith('@') && /eslint/u.test(plugin))) &&
+      plugin !== 'eslint-plugin-disable-autofix' &&
+      plugin !== '@eslint',
   );
 
 const importedPlugins: Promise<NodeModule>[] = [];

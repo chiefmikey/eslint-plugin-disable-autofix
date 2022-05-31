@@ -1,8 +1,10 @@
 import { all, allRules } from './rules';
 
-export default {
+const configuration = {
   configs: {
     all,
   },
   allRules,
 };
+
+export default configuration;
