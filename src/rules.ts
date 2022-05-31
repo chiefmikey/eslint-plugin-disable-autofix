@@ -64,14 +64,16 @@ for (const plugin of getPlugins) {
 
 const getAllPlugins = async () => {
   for (const plugin of await Promise.all(importedPlugins)) {
-    console.log(plugin);
-    const pluginName = plugin.id.includes('@')
-      ? plugin.id.split('/')[0]
-      : plugin.id.replace(/^eslint-plugin-/u, '');
-    for (const rule of Object.keys(plugin.rules || {})) {
-      if (rule) {
-        allRules[`${pluginName}/${rule}` as keyof typeof allRules] =
-          getNonFixableRule(plugin.rules[rule as keyof typeof plugin.rules]);
+    const pluginId = plugin.id;
+    if (pluginId) {
+      const pluginName = pluginId.includes('@')
+        ? pluginId.split('/')[0]
+        : pluginId.replace(/^eslint-plugin-/u, '');
+      for (const rule of Object.keys(plugin.rules || {})) {
+        if (rule) {
+          allRules[`${pluginName}/${rule}` as keyof typeof allRules] =
+            getNonFixableRule(plugin.rules[rule as keyof typeof plugin.rules]);
+        }
       }
     }
   }
