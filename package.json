@@ -11,7 +11,7 @@
     "eslint-rule-composer": "^0.3.0"
   },
   "devDependencies": {
-    "@mikey-pro/style-guide": "^4.13.1",
+    "@mikey-pro/style-guide": "^4.13.16",
     "@types/eslint": "^8.4.2",
     "prettier": "^2.6.2",
     "stylelint": "^14.8.5",
