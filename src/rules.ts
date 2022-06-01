@@ -15,20 +15,17 @@ const getBuiltIn = fs
   .readdirSync(path.join(dirname, 'node_modules/eslint/lib/rules'))
   .filter((builtIn) => builtIn.includes('.js'));
 
-for (const builtIn of getBuiltIn) {
-  importedBuiltIns.push(
-    import(
-      path.join(dirname, 'node_modules/eslint/lib/rules/', builtIn)
-    ) as Promise<NodeModule>,
-  );
-}
-
-const getAllRules = async () => {
-  for (const rule of await Promise.all(importedBuiltIns)) {
-    builtIns[rule.id as keyof typeof builtIns] = rule;
+  for (const builtIn of getBuiltIn) {
+    const builtInRule =
+      require(
+        path.join(dirname, 'node_modules/eslint/lib/rules/', builtIn)
+      );
+builtIns[builtIn] = builtInRule;
   }
-};
-getAllRules();
+
+  // for (const rule of importedBuiltIns) {
+  //   builtIns[rule.id as keyof typeof builtIns] = rule;
+  // }
 
 for (const current of Object.keys(builtIns)) {
   const rule = linter.getRules().get(current);
@@ -49,21 +46,24 @@ const getPlugins = fs
 
 const importedPlugins: Promise<NodeModule>[] = [];
 
-for (const plugin of getPlugins) {
-  let copyIt = plugin;
-  if (plugin.includes('@')) {
-    const pluginDirectory = fs
-      .readdirSync(path.join(dirname, 'node_modules/', plugin))
-      .find((read) => /plugin/u.test(read));
-    if (pluginDirectory) {
-      copyIt = path.join(dirname, 'node_modules/', plugin, pluginDirectory);
+  for (const plugin of getPlugins) {
+    let copyIt = plugin;
+    if (plugin.includes('@')) {
+      const pluginDirectory = fs
+        .readdirSync(path.join(dirname, 'node_modules/', plugin))
+        .find((read) => /plugin/u.test(read));
+      if (pluginDirectory) {
+        copyIt = path.join(dirname, 'node_modules/', plugin, pluginDirectory);
+      }
     }
+    const imported = require(copyIt);
+    imported.id = plugin;
+    importedPlugins.push(imported);
   }
-  importedPlugins.push(import(copyIt) as Promise<NodeModule>);
-}
 
-const getAllPlugins = async () => {
-  for (const plugin of await Promise.all(importedPlugins)) {
+
+
+  for (const plugin of importedPlugins) {
     const pluginId = plugin.id;
     if (pluginId) {
       const pluginName = pluginId.includes('@')
@@ -77,16 +77,18 @@ const getAllPlugins = async () => {
       }
     }
   }
-};
-getAllPlugins();
 
-const PLUGIN_NAME = 'disable-autofix';
 
-export const all = {
+
+
+  const PLUGIN_NAME = 'disable-autofix';
+  export const all = {
   plugins: [PLUGIN_NAME],
-  allRules: {},
+  rules: {},
 };
-
 for (const rule of Object.keys(allRules)) {
-  Object.assign(all.allRules, { [`${PLUGIN_NAME}/${rule}`]: 'error' });
+  Object.assign(all.rules, { [`${PLUGIN_NAME}/${rule}`]: 'error' });
 }
+
+
+
