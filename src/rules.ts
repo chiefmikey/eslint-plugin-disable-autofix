@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import appRoot from 'app-root-path';
 
 import eslint from 'eslint';
 
@@ -12,7 +13,7 @@ const importedPlugins: {
   rules: { [key: string]: eslint.Rule.RuleModule };
   id: string;
 }[] = [];
-const dirname = path.resolve();
+const dirname = appRoot.toString();
 const nodeModules = 'node_modules/';
 
 const getBuiltIn = fs
