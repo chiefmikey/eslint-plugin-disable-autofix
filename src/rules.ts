@@ -5,13 +5,15 @@ import eslint from 'eslint';
 
 import getNonFixableRule from './utils';
 
+interface EslintPlugin {
+  rules: { [key: string]: eslint.Rule.RuleModule };
+  id: string;
+}
+
 const linter = new eslint.Linter();
 export const rules: { [key: string]: eslint.Rule.RuleModule } = {};
 const builtIns: { [key: string]: NodeModule } = {};
-const importedPlugins: {
-  rules: { [key: string]: eslint.Rule.RuleModule };
-  id: string;
-}[] = [];
+const importedPlugins: EslintPlugin[] = [];
 const dirname = path.resolve();
 const nodeModules = 'node_modules/';
 
@@ -47,21 +49,26 @@ const getPlugins = fs
   );
 
 for (const plugin of getPlugins) {
-  let copyIt = plugin;
   if (plugin.includes('@')) {
-    const pluginDirectory = fs
+    const pluginDirectories = fs
       .readdirSync(path.join(dirname, nodeModules, plugin))
-      .find((read) => /plugin/u.test(read));
-    if (pluginDirectory) {
-      copyIt = path.join(dirname, nodeModules, plugin, pluginDirectory);
-    }
+      .filter((read) => /plugin/u.test(read));
+    pluginDirectories.forEach((pluginDirectory) => {
+      const scopedPlugin = path.join(
+        dirname,
+        nodeModules,
+        plugin,
+        pluginDirectory,
+      );
+      const imported = require(scopedPlugin) as EslintPlugin;
+      imported.id = scopedPlugin.replace(path.join(dirname, nodeModules), '');
+      importedPlugins.push(imported);
+    });
+  } else {
+    const imported = require(plugin) as EslintPlugin;
+    imported.id = plugin;
+    importedPlugins.push(imported);
   }
-  const imported = require(copyIt) as {
-    rules: { [key: string]: eslint.Rule.RuleModule };
-    id: string;
-  };
-  imported.id = plugin;
-  importedPlugins.push(imported);
 }
 
 for (const plugin of importedPlugins) {
@@ -69,7 +76,8 @@ for (const plugin of importedPlugins) {
   const pluginId = plugin.id;
   if (pluginId) {
     const pluginName = pluginId.includes('@')
-      ? pluginId.split('/')[0]
+      ? // convert `@angular-eslint/eslint-plugin` -> `@angular-eslint` and `@angular-eslint/eslint-plugin-template` -> `@angular-eslint/template`
+        pluginId.replace(/eslint-plugin(-|)/u, '').replace(/\/$/, '')
       : pluginId.replace(/^eslint-plugin-/u, '');
     for (const rule of Object.keys(pluginRules || {})) {
       if (rule) {
