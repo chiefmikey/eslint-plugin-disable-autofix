@@ -3,6 +3,7 @@ import path from 'node:path';
 import appRoot from 'app-root-path';
 
 import eslint from 'eslint';
+import appRoot from 'app-root-path';
 
 import getNonFixableRule from './utils';
 
