@@ -7,12 +7,14 @@
     "tsc": "tsc"
   },
   "dependencies": {
+    "app-root-path": "^3.1.0",
     "eslint": "^8.16.0",
     "eslint-rule-composer": "^0.3.0"
   },
   "devDependencies": {
     "@mikey-pro/style-guide": "^4.14.0",
     "@types/eslint": "^8.4.2",
+    "@types/node": "^18.11.9",
     "prettier": "^2.6.2",
     "stylelint": "^14.8.5",
     "ts-node": "^10.8.0",
