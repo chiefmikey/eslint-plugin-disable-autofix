@@ -8,27 +8,23 @@
   },
   "dependencies": {
     "app-root-path": "^3.1.0",
-    "eslint": "^8.16.0",
+    "eslint": "^8.29.0",
     "eslint-rule-composer": "^0.3.0"
   },
   "devDependencies": {
-    "@mikey-pro/style-guide": "^4.14.0",
-    "@types/eslint": "^8.4.2",
-    "@types/node": "^18.11.9",
-    "prettier": "^2.6.2",
-    "stylelint": "^14.8.5",
-    "ts-node": "^10.8.0",
-    "typescript": "^4.7.2"
+    "@mikey-pro/style-guide": "^4.146.0",
+    "@types/eslint": "^8.4.10",
+    "@types/node": "^18.11.11",
+    "prettier": "^2.8.0",
+    "stylelint": "^14.16.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.3"
   },
-  "files": [
-    "lib/",
-    "README.md",
-    "LICENSE"
-  ],
+  "files": ["lib/", "README.md", "LICENSE"],
   "license": "MIT",
   "repository": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
   "homepage": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
-  "author": "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)",
+  "author": "Mikl Wolfe <wolfe@mikl.io> (https://github.com/chiefmikey)",
   "bugs": "https://github.com/chiefmikey/eslint-plugin-disable-autofix/issues",
   "keywords": [
     "eslint-plugin-disable-autofix",
@@ -43,10 +39,6 @@
     "fix",
     "--fix",
     "no-autofix"
-  ],
-  "contributors": [
-    "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)",
-    "薛定谔的猫 <weiran.zsd@outlook.com>"
   ],
   "prettier": "@mikey-pro/prettier-config",
   "eslintConfig": {
