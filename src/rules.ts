@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import eslint from 'eslint';
 import appRoot from 'app-root-path';
+import eslint from 'eslint';
 
 import getNonFixableRule from './utils';
 
