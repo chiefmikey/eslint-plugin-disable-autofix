@@ -4,7 +4,9 @@
   "description": "Disable ESLint autofix (--fix) for specified rules",
   "main": "./lib/index.js",
   "scripts": {
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "publish-local": "tsc && yalc publish",
+    "publish-prod": "tsc && npm publish --access public"
   },
   "dependencies": {
     "app-root-path": "^3.1.0",
