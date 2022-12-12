@@ -14,9 +14,9 @@
     "eslint-rule-composer": "^0.3.0"
   },
   "devDependencies": {
-    "@mikey-pro/style-guide": "^4.146.0",
     "@types/eslint": "^8.4.10",
     "@types/node": "^18.11.13",
+    "mikey-pro": "^5.0.3",
     "prettier": "^2.8.1",
     "stylelint": "^14.16.0",
     "ts-node": "^10.9.1",
@@ -41,12 +41,5 @@
     "fix",
     "--fix",
     "no-autofix"
-  ],
-  "prettier": "@mikey-pro/prettier-config",
-  "eslintConfig": {
-    "extends": "@mikey-pro/eslint-config"
-  },
-  "stylelint": {
-    "extends": "@mikey-pro/stylelint-config"
-  }
+  ]
 }
