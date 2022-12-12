@@ -16,7 +16,7 @@
   "devDependencies": {
     "@types/eslint": "^8.4.10",
     "@types/node": "^18.11.13",
-    "mikey-pro": "^5.0.6",
+    "mikey-pro": "^5.0.7",
     "prettier": "^2.8.1",
     "stylelint": "^14.16.0",
     "ts-node": "^10.9.1",
