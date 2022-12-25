@@ -10,19 +10,20 @@
   },
   "dependencies": {
     "app-root-path": "^3.1.0",
-    "eslint": "^8.29.0",
+    "eslint": "^8.30.0",
     "eslint-rule-composer": "^0.3.0"
   },
   "devDependencies": {
     "@types/eslint": "^8.4.10",
-    "@types/node": "^18.11.13",
-    "mikey-pro": "^5.0.7",
-    "prettier": "^2.8.1",
-    "stylelint": "^14.16.0",
-    "ts-node": "^10.9.1",
+    "@types/node": "^18.11.17",
+    "mikey-pro": "^6.0.5",
     "typescript": "^4.9.4"
   },
-  "files": ["lib/", "README.md", "LICENSE"],
+  "files": [
+    "lib/",
+    "README.md",
+    "LICENSE"
+  ],
   "license": "MIT",
   "repository": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
   "homepage": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
