@@ -1,1 +1,3 @@
-{ "extends": "@mikey-pro/eslint-config" }
+{
+  "extends": "@mikey-pro/eslint-config"
+}
