@@ -1,29 +1,35 @@
 {
   "compilerOptions": {
-    "lib": ["es2021", "DOM", "DOM.Iterable"],
+    "lib": [
+      "es2021",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "moduleResolution": "node",
     "module": "commonjs",
     "target": "es2017",
     "sourceMap": false,
     "allowJs": true,
     "baseUrl": ".",
-
     "strict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": false,
     "forceConsistentCasingInFileNames": true,
-
     "noEmit": false,
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
-
     "outDir": "./lib",
     "paths": {
-      "./*.ts": ["./*"]
-    },
+      "./*.ts": [
+        "./*"
+      ]
+    }
   },
-
-  "exclude": ["node_modules", "**/*.spec.ts", "lib"]
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "lib"
+  ]
 }
