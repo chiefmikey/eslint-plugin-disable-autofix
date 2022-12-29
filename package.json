@@ -4,9 +4,9 @@
   "description": "Disable ESLint autofix (--fix) for specified rules",
   "main": "./lib/index.js",
   "scripts": {
-    "tsc": "tsc",
     "publish-local": "tsc && yalc publish",
-    "publish-prod": "tsc && npm publish --access public"
+    "publish-prod": "tsc && npm publish --access public",
+    "tsc": "tsc"
   },
   "dependencies": {
     "app-root-path": "^3.1.0",
@@ -15,8 +15,8 @@
   },
   "devDependencies": {
     "@types/eslint": "^8.4.10",
-    "@types/node": "^18.11.17",
-    "mikey-pro": "^6.0.5",
+    "@types/node": "^18.11.18",
+    "mikey-pro": "^6.1.4",
     "typescript": "^4.9.4"
   },
   "files": [
@@ -24,11 +24,10 @@
     "README.md",
     "LICENSE"
   ],
-  "license": "MIT",
-  "repository": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
   "homepage": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
-  "author": "Mikl Wolfe <wolfe@mikl.io> (https://github.com/chiefmikey)",
+  "repository": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
   "bugs": "https://github.com/chiefmikey/eslint-plugin-disable-autofix/issues",
+  "license": "MIT",
   "keywords": [
     "eslint-plugin-disable-autofix",
     "eslint-plugin",
@@ -42,5 +41,6 @@
     "fix",
     "--fix",
     "no-autofix"
-  ]
+  ],
+  "author": "Mikl Wolfe <wolfe@mikl.io> (https://github.com/chiefmikey)"
 }
