@@ -4,6 +4,7 @@
   "description": "Disable ESLint autofix (--fix) for specified rules",
   "main": "./lib/index.js",
   "scripts": {
+    "fix": "eslint --fix '**/*'",
     "publish-local": "tsc && yalc publish",
     "publish-prod": "tsc && npm publish --access public",
     "tsc": "tsc"
@@ -16,7 +17,7 @@
   "devDependencies": {
     "@types/eslint": "^8.4.10",
     "@types/node": "^18.11.18",
-    "mikey-pro": "^6.1.4",
+    "mikey-pro": "^6.1.7",
     "typescript": "^4.9.4"
   },
   "files": [
