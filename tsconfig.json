@@ -27,9 +27,12 @@
       ]
     }
   },
+  "include": [
+    "index.d.ts",
+    "test/**/*.ts",
+    "src/**/*.ts"
+  ],
   "exclude": [
-    "node_modules",
-    "**/*.spec.ts",
-    "lib"
+    "test/**/*.ts"
   ]
 }
