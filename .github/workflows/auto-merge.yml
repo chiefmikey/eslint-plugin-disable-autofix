@@ -15,5 +15,5 @@ jobs:
         run: gh pr merge "$PR_URL" --auto --squash --subject "$COMMIT_MESSAGE"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.DISPATCH_WORKFLOW}}
+          GH_TOKEN: ${{secrets.DISPATCH_WORKFLOW}}
           COMMIT_MESSAGE: ${{github.event.pull_request.title}}
