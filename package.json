@@ -26,7 +26,7 @@
     "eslint-plugin-unicorn": "^48.0.1",
     "jest": "^29.7.0",
     "lodash": "^4.17.21",
-    "mikey-pro": "^6.4.23",
+    "mikey-pro": "^6.5.6",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
