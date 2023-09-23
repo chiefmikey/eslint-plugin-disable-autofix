@@ -57,12 +57,7 @@ for (const plugin of getPlugins) {
       .readdirSync(path.join(dirname, nodeModules, plugin))
       .filter((read) => /plugin/u.test(read));
     for (const pluginDirectory of pluginDirectories) {
-      const scopedPlugin = path.join(
-        dirname,
-        nodeModules,
-        plugin,
-        pluginDirectory,
-      );
+      const scopedPlugin = path.join(plugin, pluginDirectory);
       const imported = require(scopedPlugin) as EslintPlugin;
       imported.id = scopedPlugin.replace(path.join(dirname, nodeModules), '');
       importedPlugins.push(imported);
