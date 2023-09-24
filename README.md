@@ -1,7 +1,6 @@
 # eslint-plugin-disable-autofix
 
-Disable ESLint autofix (--fix) for specified rules and prevent them from being
-formatted, without turning them off
+Disable autofix for ESLint rules and prevent them from being formatted without having to turning them off
 
 ## Usage
 
@@ -25,7 +24,7 @@ module.exports = {
 };
 ```
 
-Use 3rd-party plugins
+Use 3rd-party rules
 
 ```js
 module.exports = {
@@ -37,7 +36,7 @@ module.exports = {
 };
 ```
 
-Use scoped plugins
+Use scoped rules
 
 ```js
 module.exports = {
