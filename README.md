@@ -1,6 +1,7 @@
 # eslint-plugin-disable-autofix
 
-Disable autofix for ESLint rules and prevent them from being formatted without having to turning them off
+Disable autofix for ESLint rules and prevent them from being formatted without
+having to turning them off
 
 ## Usage
 
