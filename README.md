@@ -13,7 +13,9 @@ npm i -D eslint-plugin-disable-autofix
 
 ### Configure
 
-Add prefix `disable-autofix/` to the rule in eslintrc and disable the original
+Include `disable-autofix` in the `eslintrc` plugins array
+
+Add prefix `disable-autofix/` to the rule and disable the original
 
 ```js
 module.exports = {
