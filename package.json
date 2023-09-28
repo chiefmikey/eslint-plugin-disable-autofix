@@ -32,7 +32,7 @@
     "typescript": "^5.2.2"
   },
   "peerDependencies": {
-    "eslint": "^7.0.0"
+    "eslint": ">= 7"
   },
   "homepage": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
   "repository": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
