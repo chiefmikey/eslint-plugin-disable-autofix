@@ -44,6 +44,7 @@ const importedPlugins = [];
 
 const map = (ruleComposer as { mapReports: MapReports }).mapReports;
 
+// delete metadata fixable property
 const disableMeta = (rule: Rule.RuleModule) => {
   if (rule.meta?.fixable) {
     delete rule.meta.fixable;
@@ -51,6 +52,7 @@ const disableMeta = (rule: Rule.RuleModule) => {
   return rule;
 };
 
+// delete map reports fix method
 const disableFix = (rule: Rule.RuleModule) => {
   const disableReports = map(rule, (problem) => {
     delete problem.fix;
@@ -59,6 +61,7 @@ const disableFix = (rule: Rule.RuleModule) => {
   return disableMeta(disableReports);
 };
 
+// handle name conversion
 const convertPluginId = (pluginId: string) => {
   return pluginId.includes('@')
     ? // `@angular-eslint/eslint-plugin` -> `@angular-eslint`
@@ -68,12 +71,14 @@ const convertPluginId = (pluginId: string) => {
       pluginId.replace(/^eslint-plugin-/u, '');
 };
 
+// disable builtin rules√
 const builtinRules = linter.getRules();
 for (const [ruleId, rule] of builtinRules) {
   disabledRules[ruleId] = disableFix(_.cloneDeep(rule));
 }
 
-const importPlugins = fs
+// read eslint plugins
+const eslintPlugins = fs
   .readdirSync(path.join(dirname, nodeModules))
   .filter(
     (plugin) =>
@@ -83,7 +88,8 @@ const importPlugins = fs
       plugin !== '@eslint',
   );
 
-for (const plugin of importPlugins) {
+// import eslint plugins
+for (const plugin of eslintPlugins) {
   if (plugin.includes('@')) {
     const pluginDirectories = fs
       .readdirSync(path.join(dirname, nodeModules, plugin))
@@ -104,6 +110,7 @@ for (const plugin of importPlugins) {
   }
 }
 
+// disable plugin rules
 for (const plugin of importedPlugins) {
   const pluginRules = plugin.rules || {};
   const pluginId = plugin.id || '';
