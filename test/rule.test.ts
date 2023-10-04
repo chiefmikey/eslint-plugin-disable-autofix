@@ -6,7 +6,7 @@ interface Results {
   message: string | undefined;
 }
 
-describe('rules', () => {
+describe('test rule fix disable', () => {
   it('fixes the builtin rule', async () => {
     expect.hasAssertions();
     const inputText = 'let test = true;';
@@ -14,12 +14,14 @@ describe('rules', () => {
     const results = (await eslint(inputText, builtin.fix)) as Results;
     expect(results).toBe(outputText);
   });
+
   it('does not fix the builtin rule', async () => {
     expect.hasAssertions();
     const inputText = 'let test = true;';
     const results = (await eslint(inputText, builtin.disable)) as Results;
     expect(results).toBeUndefined();
   });
+
   it('fixes the plugin rule', async () => {
     expect.hasAssertions();
     const inputText = 'const env = true';
@@ -27,6 +29,7 @@ describe('rules', () => {
     const results = (await eslint(inputText, unicorn.fix)) as Results;
     expect(results).toBe(outputText);
   });
+
   it('does not fix the plugin rule', async () => {
     expect.hasAssertions();
     const inputText = 'const environment = true';
