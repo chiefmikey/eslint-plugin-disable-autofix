@@ -14,6 +14,6 @@ jobs:
       - name: Enable auto-merge for Dependabot PRs
         run: gh pr merge "$PR_URL" --auto --squash --subject "$COMMIT_MESSAGE"
         env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GH_TOKEN: ${{secrets.DISPATCH_WORKFLOW}}
-          COMMIT_MESSAGE: ${{github.event.pull_request.title}}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.AUTO_MERGE }}
+          COMMIT_MESSAGE: ${{ github.event.pull_request.title }}
