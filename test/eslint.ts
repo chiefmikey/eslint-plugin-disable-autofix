@@ -1,6 +1,6 @@
 import { ESLint } from 'eslint';
 
-const main = async (text: string, config: ESLint.ConfigData) => {
+const eslint = async (text: string, config: ESLint.ConfigData) => {
   try {
     const options: ESLint.Options = {
       fix: true,
@@ -10,6 +10,7 @@ const main = async (text: string, config: ESLint.ConfigData) => {
         'eslint-plugin-disable-autofix': require('../dist') as ESLint.Plugin,
       },
     };
+
     const eslint = new ESLint(options);
     const results = await eslint.lintText(text);
 
@@ -19,4 +20,4 @@ const main = async (text: string, config: ESLint.ConfigData) => {
   }
 };
 
-export default main;
+export default eslint;
