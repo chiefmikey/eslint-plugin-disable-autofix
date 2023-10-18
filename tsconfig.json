@@ -25,9 +25,10 @@
     }
   },
   "include": [
-    "./index.d.ts",
-    "./test/**/*.ts",
-    "./src/**/*.ts"
+    "index.d.ts",
+    "test/**/*.ts",
+    "src/**/*.ts",
+    "jest.config.*"
   ],
   "exclude": [
     "node_modules",
