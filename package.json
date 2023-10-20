@@ -20,7 +20,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@types/eslint": "^8.44.5",
+    "@types/eslint": "^8.44.6",
     "@types/jest": "^29.5.6",
     "@types/lodash": "^4.14.200",
     "eslint-plugin-unicorn": "^48.0.1",
