@@ -71,7 +71,7 @@ const convertPluginId = (pluginId: string) => {
       pluginId.replace(/^eslint-plugin-/u, '');
 };
 
-// disable builtin rules√
+// disable builtin rules
 const builtinRules = linter.getRules();
 for (const [ruleId, rule] of builtinRules) {
   disabledRules[ruleId] = disableFix(_.cloneDeep(rule));
