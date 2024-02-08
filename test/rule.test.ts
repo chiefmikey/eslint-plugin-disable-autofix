@@ -1,4 +1,4 @@
-import { builtin, unicorn } from './configs';
+import { builtin, unicorn, babel } from './configs';
 import eslint from './eslint';
 
 interface Results {
@@ -34,6 +34,21 @@ describe('test rule fix disable', () => {
     expect.hasAssertions();
     const inputText = 'const environment = true';
     const results = (await eslint(inputText, unicorn.disable)) as Results;
+    expect(results).toBeUndefined();
+  });
+
+  it('fixes the scoped plugin rule', async () => {
+    expect.hasAssertions();
+    const inputText = 'const object = { property: true }';
+    const outputText = 'const object = {property: true}';
+    const results = (await eslint(inputText, babel.fix)) as Results;
+    expect(results).toBe(outputText);
+  });
+
+  it('does not fix the scoped plugin rule', async () => {
+    expect.hasAssertions();
+    const inputText = 'const object = { property: true }';
+    const results = (await eslint(inputText, babel.disable)) as Results;
     expect(results).toBeUndefined();
   });
 });
