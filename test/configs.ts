@@ -55,3 +55,23 @@ export const unicorn = {
     },
   } as ESLint.ConfigData,
 };
+
+export const babel = {
+  fix: {
+    ...baseConfig,
+    plugins: ['@babel'],
+    rules: {
+      '@babel/object-curly-spacing': 1,
+      'eol-last': 0,
+    },
+  } as ESLint.ConfigData,
+  disable: {
+    ...baseConfig,
+    plugins: ['disable-autofix', '@babel'],
+    rules: {
+      '@babel/object-curly-spacing': 0,
+      'disable-autofix/@babel/object-curly-spacing': 1,
+      'eol-last': 0,
+    },
+  } as ESLint.ConfigData,
+};
