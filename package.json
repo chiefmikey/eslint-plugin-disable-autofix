@@ -4,6 +4,8 @@
   "description": "Disable autofix for ESLint rules without turning them off",
   "scripts": {
     "build": "tsc -p tsconfig.build.json && sed -i '' -e 's/exports\\.default/module.exports/g' ./dist/index.js",
+    "gh-build": "tsc -p tsconfig.build.json && sed -i -e 's/exports\\.default/module.exports/g' ./dist/index.js",
+    "gh-test": "npm run gh-build && jest",
     "major": "npm version major; cd dist && npm version major",
     "minor": "npm version minor; cd dist && npm version minor",
     "ncu": "ncu -u; cd dist && ncu -u;",
