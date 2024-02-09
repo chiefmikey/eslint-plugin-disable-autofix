@@ -15,7 +15,7 @@ jobs:
         node-version: 'latest'
 
     - name: Install
-      run: npm ci
+      run: npm i
 
     - name: Run
       run: npm run test
