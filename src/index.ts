@@ -82,8 +82,7 @@ const eslintPlugins = fs
   .readdirSync(path.join(dirname, nodeModules))
   .filter(
     (plugin) =>
-      (plugin.startsWith('eslint-plugin') ||
-        plugin.startsWith('@')) &&
+      (plugin.startsWith('eslint-plugin') || plugin.startsWith('@')) &&
       plugin !== 'eslint-plugin-disable-autofix' &&
       plugin !== '@eslint',
   );
@@ -93,7 +92,7 @@ for (const plugin of eslintPlugins) {
   if (plugin.includes('@')) {
     const pluginDirectories = fs
       .readdirSync(path.join(dirname, nodeModules, plugin))
-      .filter((read) => read.startsWith("eslint-plugin"));
+      .filter((read) => read.startsWith('eslint-plugin'));
     for (const pluginDirectory of pluginDirectories) {
       const scopedPlugin = path.posix.join(plugin, pluginDirectory);
       const importedPlugin = require(scopedPlugin) as EslintPlugin;
