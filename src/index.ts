@@ -98,12 +98,12 @@ const eslintPlugins = fs
   );
 
 const importScopedPlugin = async (plugin: string) => {
-    const pluginDirectories = fs
-      .readdirSync(path.join(dirname, nodeModules, plugin))
-      .filter((read) => read.startsWith('eslint-plugin'));
+  const pluginDirectories = fs
+    .readdirSync(path.join(dirname, nodeModules, plugin))
+    .filter((read) => read.startsWith('eslint-plugin'));
 
-    for (const pluginDirectory of pluginDirectories) {
-      const scopedPlugin = path.posix.join(plugin, pluginDirectory);
+  for (const pluginDirectory of pluginDirectories) {
+    const scopedPlugin = path.posix.join(plugin, pluginDirectory);
     try {
       const importedPlugin = (await import(scopedPlugin)) as EslintPlugin;
       importedPlugin.id = scopedPlugin.replace(
@@ -127,12 +127,28 @@ const importPlugin = async (plugin: string) => {
   }
 };
 
+// import eslint plugins
+const importPlugins = async () => {
+  for (const plugin of eslintPlugins) {
+    const pluginName = convertPluginId(plugin);
+    if (disabledConfigRules.some((rule) => rule.startsWith(`${pluginName}/`))) {
+      await (plugin.startsWith('@')
+        ? importScopedPlugin(plugin)
+        : importPlugin(plugin));
+    }
+  }
+};
+
+importPlugins().catch((error) => {
+  console.error('Failed to import plugins:', error);
+});
 
 // disable plugin rules
 for (const plugin of importedPlugins) {
   const pluginRules = plugin.rules || {};
   const pluginId = plugin.id || '';
   const pluginName = convertPluginId(pluginId);
+
   for (const ruleId of Object.keys(pluginRules)) {
     disabledRules[`${pluginName}/${ruleId}`] = disableFix(
       _.cloneDeep(pluginRules[ruleId]),
