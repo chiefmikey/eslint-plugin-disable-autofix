@@ -73,7 +73,7 @@ const disableFix = (rule: Rule.RuleModule) => {
 
 // handle name conversion
 const convertPluginId = (pluginId: string) => {
-  return pluginId.includes('@')
+  return pluginId.startsWith('@')
     ? // `@angular-eslint/eslint-plugin` -> `@angular-eslint`
       // `@angular-eslint/eslint-plugin-template` -> `@angular-eslint/template`
       pluginId.replace(/eslint-plugin(-|)/u, '').replace(/\/$/, '')
