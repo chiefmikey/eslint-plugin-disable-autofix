@@ -97,27 +97,36 @@ const eslintPlugins = fs
       plugin !== '@eslint',
   );
 
-// import eslint plugins
-for (const plugin of eslintPlugins) {
-  if (plugin.includes('@')) {
+const importScopedPlugin = async (plugin: string) => {
     const pluginDirectories = fs
       .readdirSync(path.join(dirname, nodeModules, plugin))
       .filter((read) => read.startsWith('eslint-plugin'));
+
     for (const pluginDirectory of pluginDirectories) {
       const scopedPlugin = path.posix.join(plugin, pluginDirectory);
-      const importedPlugin = require(scopedPlugin) as EslintPlugin;
+    try {
+      const importedPlugin = (await import(scopedPlugin)) as EslintPlugin;
       importedPlugin.id = scopedPlugin.replace(
         path.join(dirname, nodeModules),
         '',
       );
       importedPlugins.push(importedPlugin);
+    } catch (error) {
+      console.error(`Failed to import scoped plugin ${plugin}:`, error);
     }
-  } else {
-    const imported = require(plugin) as EslintPlugin;
-    imported.id = plugin;
-    importedPlugins.push(imported);
   }
-}
+};
+
+const importPlugin = async (plugin: string) => {
+  try {
+    const importedPlugin = (await import(plugin)) as EslintPlugin;
+    importedPlugin.id = plugin;
+    importedPlugins.push(importedPlugin);
+  } catch (error) {
+    console.error(`Failed to import plugin ${plugin}:`, error);
+  }
+};
+
 
 // disable plugin rules
 for (const plugin of importedPlugins) {
