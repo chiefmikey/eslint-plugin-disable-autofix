@@ -40,7 +40,17 @@ const linter = new Linter();
 const disabledRules: DisabledRules = {};
 const dirname = appRoot.toString();
 const nodeModules = 'node_modules/';
-const importedPlugins = [];
+const importedPlugins: EslintPlugin[] = [];
+
+// read eslint config
+const eslintConfig = JSON.parse(
+  fs.readFileSync('.eslintrc.json').toString(),
+) as Linter.Config;
+
+// extract disabled rules
+const disabledConfigRules = Object.keys(eslintConfig.rules ?? {})
+  .filter((rule) => rule.startsWith('disable-autofix/'))
+  .map((rule) => rule.replace('disable-autofix/', ''));
 
 const map = (ruleComposer as { mapReports: MapReports }).mapReports;
 
