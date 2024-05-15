@@ -122,7 +122,13 @@ for (const plugin of importedPlugins) {
 }
 
 const plugin = {
+  meta: {
+    name: 'eslint-plugin-disable-autofix',
+    version: '1.0.0',
+  },
+  configs: {},
   rules: disabledRules,
+  processors: {},
 };
 
 export default plugin;
