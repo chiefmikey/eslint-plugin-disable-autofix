@@ -71,10 +71,16 @@ const convertPluginId = (pluginId: string) => {
       pluginId.replace(/^eslint-plugin-/u, '');
 };
 
-// disable builtin rules
-const builtinRules = linter.getRules();
-for (const [ruleId, rule] of builtinRules) {
-  disabledRules[ruleId] = disableFix(_.cloneDeep(rule));
+// read eslint rules
+const eslintRules = fs
+  .readdirSync(path.join(dirname, nodeModules, '@eslint'))
+  .filter((rule) => rule.startsWith('eslint-rule'));
+
+// import eslint rules
+for (const rule of eslintRules) {
+  const rulePath = path.posix.join('@eslint', rule);
+  const importedRule = require(rulePath) as Rule.RuleModule;
+  disabledRules[rule] = disableFix(_.cloneDeep(importedRule));
 }
 
 // read eslint plugins
