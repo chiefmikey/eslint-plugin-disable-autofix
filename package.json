@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "app-root-path": "^3.1.0",
-    "eslint": "^9.2.0",
+    "eslint": "^8.57.0",
     "eslint-rule-composer": "^0.3.0",
     "lodash": "^4.17.21"
   },
@@ -25,7 +25,7 @@
     "@babel/eslint-plugin": "^7.24.5",
     "@types/eslint": "^8.56.10",
     "@types/jest": "^29.5.12",
-    "@types/lodash": "^4.17.1",
+    "@types/lodash": "^4.17.4",
     "eslint-plugin-unicorn": "^53.0.0",
     "jest": "^29.7.0",
     "mikey-pro": "^7.5.2",
