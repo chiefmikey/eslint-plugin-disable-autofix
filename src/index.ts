@@ -2,12 +2,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import appRoot from 'app-root-path';
-import { Rule, Linter, AST, SourceCode } from 'eslint';
+import type { Rule, AST, SourceCode } from 'eslint';
 import ruleComposer from 'eslint-rule-composer';
 import _ from 'lodash';
 
 interface EslintPlugin {
-  rules: { [key: string]: Rule.RuleModule };
+  rules: Record<string, Rule.RuleModule>;
   id: string;
 }
 
@@ -25,9 +25,7 @@ interface Metadata {
   filename: string;
 }
 
-interface DisabledRules {
-  [name: string]: Rule.RuleModule;
-}
+type DisabledRules = Record<string, Rule.RuleModule>;
 
 type Predicate<T> = (problem: Problem, metadata: Metadata) => T;
 
@@ -36,7 +34,6 @@ type MapReports = (
   iteratee: Predicate<Problem>,
 ) => Rule.RuleModule;
 
-const linter = new Linter();
 const disabledRules: DisabledRules = {};
 const dirname = appRoot.toString();
 const nodeModules = 'node_modules/';
@@ -45,7 +42,7 @@ const importedPlugins = [];
 const map = (ruleComposer as { mapReports: MapReports }).mapReports;
 
 // delete metadata fixable property
-const disableMeta = (rule: Rule.RuleModule) => {
+const disableMeta = (rule: Rule.RuleModule): Rule.RuleModule => {
   if (rule.meta?.fixable) {
     delete rule.meta.fixable;
   }
@@ -53,7 +50,7 @@ const disableMeta = (rule: Rule.RuleModule) => {
 };
 
 // delete map reports fix method
-const disableFix = (rule: Rule.RuleModule) => {
+const disableFix = (rule: Rule.RuleModule): Rule.RuleModule => {
   const disableReports = map(rule, (problem) => {
     delete problem.fix;
     return problem;
@@ -62,7 +59,7 @@ const disableFix = (rule: Rule.RuleModule) => {
 };
 
 // handle name conversion
-const convertPluginId = (pluginId: string) => {
+const convertPluginId = (pluginId: string): string => {
   return pluginId.includes('@')
     ? // `@angular-eslint/eslint-plugin` -> `@angular-eslint`
       // `@angular-eslint/eslint-plugin-template` -> `@angular-eslint/template`
@@ -130,7 +127,7 @@ for (const plugin of importedPlugins) {
 const plugin = {
   meta: {
     name: 'eslint-plugin-disable-autofix',
-    version: '1.0.0',
+    version: '4.3.0',
   },
   configs: {},
   rules: disabledRules,
