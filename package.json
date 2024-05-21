@@ -33,9 +33,6 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
-  "peerDependencies": {
-    "eslint": ">= 7"
-  },
   "homepage": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
   "repository": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
   "bugs": "https://github.com/chiefmikey/eslint-plugin-disable-autofix/issues",
