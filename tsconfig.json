@@ -18,6 +18,9 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "outDir": "./dist",
+    "types": [
+      "jest"
+    ],
     "paths": {
       "./*.ts": [
         "./*"

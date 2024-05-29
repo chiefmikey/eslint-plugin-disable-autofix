@@ -4,6 +4,7 @@ const jestConfig: JestConfigWithTsJest = {
   testEnvironment: 'node',
   preset: 'ts-jest',
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
+  testMatch: ['**/*.test.ts'],
 };
 
 export default jestConfig;
