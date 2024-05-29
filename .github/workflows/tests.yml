@@ -8,7 +8,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  test:
+  test-v9:
     runs-on: ubuntu-latest
     steps:
     - name: Check Out
@@ -22,7 +22,7 @@ jobs:
     - name: Install
       run: npm i
 
-    - name: Run
+    - name: Test v9
       run: npm run gh-test
 
   test-v8:
@@ -42,5 +42,5 @@ jobs:
         npm rm eslint
         npm i eslint@8
 
-    - name: Run
+    - name: Test v8
       run: npm run gh-test-v8
