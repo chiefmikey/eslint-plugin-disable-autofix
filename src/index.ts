@@ -68,16 +68,21 @@ const convertPluginId = (pluginId: string): string => {
       pluginId.replace(/^eslint-plugin-/u, '');
 };
 
-// read eslint rules
+// // import eslint rules
 const eslintRules = fs
-  .readdirSync(path.join(dirname, nodeModules, '@eslint'))
-  .filter((rule) => rule.startsWith('eslint-rule'));
+  .readdirSync(path.join(dirname, nodeModules, 'eslint/lib/rules'))
+  .filter((rule) => rule.endsWith('.js') && !rule.includes('index'));
 
-// import eslint rules
 for (const rule of eslintRules) {
-  const rulePath = path.posix.join('@eslint', rule);
-  const importedRule = require(rulePath) as Rule.RuleModule;
-  disabledRules[rule] = disableFix(_.cloneDeep(importedRule));
+  const rulePath = path.posix.join(
+    dirname,
+    nodeModules,
+    'eslint/lib/rules',
+    rule,
+  );
+  const importedRule = require(rulePath);
+  const ruleName = rule.replace('.js', '');
+  disabledRules[ruleName] = disableFix(_.cloneDeep(importedRule));
 }
 
 // read eslint plugins
