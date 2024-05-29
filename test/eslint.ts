@@ -1,20 +1,9 @@
-import { ESLint } from 'eslint';
+import { Linter } from 'eslint';
 
-const eslint = async (text: string, config: ESLint.ConfigData) => {
+const eslint = async (text: string, config: Linter.FlatConfig) => {
   try {
-    const options: ESLint.Options = {
-      fix: true,
-      overrideConfig: config,
-      useEslintrc: false,
-      plugins: {
-        'eslint-plugin-disable-autofix': require('../dist') as ESLint.Plugin,
-      },
-    };
-
-    const eslint = new ESLint(options);
-    const results = await eslint.lintText(text);
-
-    return results[0].output;
+    const linter = new Linter();
+    return linter.verifyAndFix(text, [config]);
   } catch (error) {
     return error;
   }
