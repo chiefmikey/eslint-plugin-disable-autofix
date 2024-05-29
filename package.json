@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-disable-autofix",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "description": "Disable autofix for ESLint rules without turning them off",
   "scripts": {
     "build": "tsc -p tsconfig.build.json && sed -i '' -e 's/exports\\.default/module.exports/g' ./dist/index.js",
