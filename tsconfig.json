@@ -29,7 +29,7 @@
   },
   "include": [
     "index.d.ts",
-    "test/**/*.ts",
+    "tests/**/*.ts",
     "src/**/*.ts",
     "jest.config.*"
   ],
