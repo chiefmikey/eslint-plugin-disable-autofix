@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json && sed -i '' -e 's/exports\\.default/module.exports/g' ./dist/index.js",
     "gh-build": "tsc -p tsconfig.build.json && sed -i -e 's/exports\\.default/module.exports/g' ./dist/index.js",
-    "gh-test": "npm run gh-build && jest",
+    "gh-test": "npm run gh-build && jest tests/v9",
     "gh-test-v8": "npm run gh-build && jest tests/v8",
     "major": "npm version major; cd dist && npm version major",
     "minor": "npm version minor; cd dist && npm version minor",
@@ -13,8 +13,8 @@
     "node": "node dist/index.js",
     "patch": "npm version patch; cd dist && npm version patch",
     "publish": "cd dist && npm publish --access public",
-    "test": "npm run build && npm i ./dist && jest --config=jest.config.ts",
-    "test:pin": "jest --config=jest.config.ts"
+    "test": "npm run build && npm i ./dist && jest --config=jest.config.ts tests/v9",
+    "test:pin": "jest --config=jest.config.ts tests/v9"
   },
   "dependencies": {
     "app-root-path": "^3.1.0",
