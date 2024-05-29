@@ -1,77 +1,75 @@
-import { ESLint } from 'eslint';
+import babelPlugin from '@babel/eslint-plugin';
+import type { Linter } from 'eslint';
+import eslintPluginUnicorn from 'eslint-plugin-unicorn';
+
+import disableAutofix from 'eslint-plugin-disable-autofix';
 
 const baseConfig = {
-  root: true,
-  env: {
-    es2024: true,
-  },
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
+  languageOptions: {
+    ecmaVersion: 2024,
   },
 };
 
 export const builtin = {
   fix: {
     ...baseConfig,
-    extends: ['eslint:all'],
     rules: {
-      'no-unused-vars': 0,
-      'prefer-const': 1,
-      'eol-last': 0,
+      'no-unused-vars': 'off',
+      'prefer-const': 'warn',
+      'eol-last': 'off',
     },
-  } as ESLint.ConfigData,
+  } as Linter.FlatConfig,
   disable: {
     ...baseConfig,
-    plugins: ['disable-autofix'],
-    extends: ['eslint:all'],
+    plugins: { 'disable-autofix': disableAutofix },
     rules: {
-      'prefer-const': 0,
-      'disable-autofix/prefer-const': 1,
-      'no-unused-vars': 0,
-      'eol-last': 0,
+      'prefer-const': 'off',
+      'disable-autofix/prefer-const': 'warn',
+      'no-unused-vars': 'off',
+      'eol-last': 'off',
     },
-  } as ESLint.ConfigData,
+  } as Linter.FlatConfig,
 };
 
 export const unicorn = {
   fix: {
     ...baseConfig,
-    plugins: ['unicorn'],
-    extends: ['plugin:unicorn/recommended'],
+    plugins: { unicorn: eslintPluginUnicorn },
     rules: {
-      'unicorn/prevent-abbreviations': 1,
-      'eol-last': 0,
+      'unicorn/prevent-abbreviations': 'warn',
+      'eol-last': 'off',
     },
-  } as ESLint.ConfigData,
+  } as Linter.FlatConfig,
   disable: {
     ...baseConfig,
-    plugins: ['disable-autofix', 'unicorn'],
-    extends: ['plugin:unicorn/recommended'],
-    rules: {
-      'unicorn/prevent-abbreviations': 0,
-      'disable-autofix/unicorn/prevent-abbreviations': 1,
-      'eol-last': 0,
+    plugins: {
+      'disable-autofix': disableAutofix,
+      unicorn: eslintPluginUnicorn,
     },
-  } as ESLint.ConfigData,
+    rules: {
+      'unicorn/prevent-abbreviations': 'off',
+      'disable-autofix/unicorn/prevent-abbreviations': 'warn',
+      'eol-last': 'off',
+    },
+  } as Linter.FlatConfig,
 };
 
 export const babel = {
   fix: {
     ...baseConfig,
-    plugins: ['@babel'],
+    plugins: { '@babel': babelPlugin },
     rules: {
-      '@babel/object-curly-spacing': 1,
-      'eol-last': 0,
+      '@babel/object-curly-spacing': 'warn',
+      'eol-last': 'off',
     },
-  } as ESLint.ConfigData,
+  } as Linter.FlatConfig,
   disable: {
     ...baseConfig,
-    plugins: ['disable-autofix', '@babel'],
+    plugins: { 'disable-autofix': disableAutofix, '@babel': babelPlugin },
     rules: {
-      '@babel/object-curly-spacing': 0,
-      'disable-autofix/@babel/object-curly-spacing': 1,
-      'eol-last': 0,
+      '@babel/object-curly-spacing': 'off',
+      'disable-autofix/@babel/object-curly-spacing': 'warn',
+      'eol-last': 'off',
     },
-  } as ESLint.ConfigData,
+  } as Linter.FlatConfig,
 };
