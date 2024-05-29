@@ -6,6 +6,7 @@
     "build": "tsc -p tsconfig.build.json && sed -i '' -e 's/exports\\.default/module.exports/g' ./dist/index.js",
     "gh-build": "tsc -p tsconfig.build.json && sed -i -e 's/exports\\.default/module.exports/g' ./dist/index.js",
     "gh-test": "npm run gh-build && jest",
+    "gh-test-v8": "npm run gh-build && jest tests/v8",
     "major": "npm version major; cd dist && npm version major",
     "minor": "npm version minor; cd dist && npm version minor",
     "ncu": "ncu -u; cd dist && ncu -u;",
