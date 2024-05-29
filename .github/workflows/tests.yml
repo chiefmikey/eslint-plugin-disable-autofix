@@ -9,6 +9,7 @@ on:
 
 jobs:
   test-v9:
+    name: Test v9
     runs-on: ubuntu-latest
     steps:
     - name: Check Out
@@ -26,6 +27,7 @@ jobs:
       run: npm run gh-test
 
   test-v8:
+    name: Test v8
     runs-on: ubuntu-latest
     steps:
     - name: Check Out
