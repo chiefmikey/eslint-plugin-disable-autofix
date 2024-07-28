@@ -3,8 +3,8 @@
   "version": "5.0.1",
   "description": "Disable autofix for ESLint rules without turning them off",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && sed -i '' -e 's/exports\\.default/module.exports/g' ./dist/index.js",
-    "gh-build": "tsc -p tsconfig.build.json && sed -i -e 's/exports\\.default/module.exports/g' ./dist/index.js",
+    "build": "tsc -p tsconfig.build.json && sed -i '' -e 's/exports\\.default/module.exports/g' ./dist/index.js && sed -i '' -e 's/export default/export =/g' ./dist/index.d.ts",
+    "gh-build": "tsc -p tsconfig.build.json && sed -i -e 's/exports\\.default/module.exports/g' ./dist/index.js && sed -i -e 's/export default/export =/g' ./dist/index.d.ts",
     "gh-test": "npm run gh-build && jest tests/v9",
     "gh-test-v8": "npm run gh-build && jest tests/v8",
     "major": "npm version major; cd dist && npm version major",
