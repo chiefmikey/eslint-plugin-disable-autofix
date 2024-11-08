@@ -101,6 +101,7 @@ const eslintPlugins = fs
   .filter(
     (plugin) =>
       (plugin.startsWith('eslint-plugin') || plugin.startsWith('@')) &&
+      !plugin.startsWith('@types') &&
       plugin !== 'eslint-plugin-disable-autofix' &&
       plugin !== '@eslint',
   );
