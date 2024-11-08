@@ -11,15 +11,3 @@ updates:
     labels:
       - "dependencies"
     open-pull-requests-limit: 100
-
-  - package-ecosystem: "docker"
-    directory: "/"
-    schedule:
-      interval: "daily"
-      time: "12:00"
-      timezone: "America/Denver"
-    commit-message:
-      prefix: "docker"
-    labels:
-      - "dependencies"
-    open-pull-requests-limit: 100

@@ -18,6 +18,9 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "outDir": "./dist",
+    "types": [
+      "jest"
+    ],
     "paths": {
       "./*.ts": [
         "./*"
@@ -26,7 +29,7 @@
   },
   "include": [
     "index.d.ts",
-    "test/**/*.ts",
+    "tests/**/*.ts",
     "src/**/*.ts",
     "jest.config.*"
   ],

@@ -7,7 +7,7 @@ const eslint = async (text: string, config: ESLint.ConfigData) => {
       overrideConfig: config,
       useEslintrc: false,
       plugins: {
-        'eslint-plugin-disable-autofix': require('../dist') as ESLint.Plugin,
+        'eslint-plugin-disable-autofix': require('eslint-plugin-disable-autofix') as ESLint.Plugin,
       },
     };
 

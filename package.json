@@ -1,40 +1,43 @@
 {
   "name": "eslint-plugin-disable-autofix",
-  "version": "4.2.0",
+  "version": "5.0.1",
   "description": "Disable autofix for ESLint rules without turning them off",
   "scripts": {
     "build": "tsc -p tsconfig.build.json && sed -i '' -e 's/exports\\.default/module.exports/g' ./dist/index.js",
     "gh-build": "tsc -p tsconfig.build.json && sed -i -e 's/exports\\.default/module.exports/g' ./dist/index.js",
-    "gh-test": "npm run gh-build && jest",
+    "gh-test": "npm run gh-build && jest tests/v9",
+    "gh-test-v8": "npm run gh-build && jest tests/v8",
     "major": "npm version major; cd dist && npm version major",
     "minor": "npm version minor; cd dist && npm version minor",
     "ncu": "ncu -u; cd dist && ncu -u;",
     "node": "node dist/index.js",
     "patch": "npm version patch; cd dist && npm version patch",
     "publish": "cd dist && npm publish --access public",
-    "test": "npm run build && jest",
-    "test:pin": "jest"
+    "test": "npm run build && npm i ./dist && jest --config=jest.config.ts tests/v9",
+    "test:pin": "jest --config=jest.config.ts tests/v9"
   },
   "dependencies": {
     "app-root-path": "^3.1.0",
-    "eslint": "^8.56.0",
+    "eslint": "^9.3.0",
+    "eslint-plugin-disable-autofix": "file:dist",
     "eslint-rule-composer": "^0.3.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@babel/eslint-plugin": "^7.23.5",
-    "@types/eslint": "^8.56.2",
+    "@babel/eslint-plugin": "^7.24.6",
+    "@babel/preset-env": "^7.24.6",
+    "@types/eslint": "^8.56.10",
+    "@types/eslint__eslintrc": "^2.1.1",
+    "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.12",
-    "@types/lodash": "^4.14.202",
-    "eslint-plugin-unicorn": "^51.0.1",
+    "@types/lodash": "^4.17.4",
+    "babel-jest": "^29.7.0",
+    "eslint-plugin-unicorn": "^53.0.0",
     "jest": "^29.7.0",
-    "mikey-pro": "^6.6.10",
-    "ts-jest": "^29.1.2",
+    "mikey-pro": "^7.5.2",
+    "ts-jest": "^29.1.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
-  },
-  "peerDependencies": {
-    "eslint": ">= 7"
+    "typescript": "^5.4.5"
   },
   "homepage": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
   "repository": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",

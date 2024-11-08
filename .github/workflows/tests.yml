@@ -1,9 +1,15 @@
 name: Run Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
-  tests:
+  test-v9:
+    name: Test v9
     runs-on: ubuntu-latest
     steps:
     - name: Check Out
@@ -17,5 +23,26 @@ jobs:
     - name: Install
       run: npm i
 
-    - name: Run
+    - name: Test v9
       run: npm run gh-test
+
+  test-v8:
+    name: Test v8
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check Out
+      uses: actions/checkout@v4
+
+    - name: Set Up
+      uses: actions/setup-node@v4
+      with:
+        node-version: 'latest'
+
+    - name: Install
+      run: |
+        npm i
+        npm rm eslint
+        npm i eslint@8
+
+    - name: Test v8
+      run: npm run gh-test-v8
