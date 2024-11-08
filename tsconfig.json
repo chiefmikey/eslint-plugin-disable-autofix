@@ -13,7 +13,7 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": false,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": false,
+    "noEmit": true,
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,

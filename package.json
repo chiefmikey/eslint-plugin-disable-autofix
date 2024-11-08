@@ -18,26 +18,26 @@
   },
   "dependencies": {
     "app-root-path": "^3.1.0",
-    "eslint": "^9.3.0",
+    "eslint": "^9.14.0",
     "eslint-plugin-disable-autofix": "file:dist",
     "eslint-rule-composer": "^0.3.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@babel/eslint-plugin": "^7.24.6",
-    "@babel/preset-env": "^7.24.6",
-    "@types/eslint": "^8.56.10",
-    "@types/eslint__eslintrc": "^2.1.1",
+    "@babel/eslint-plugin": "^7.25.9",
+    "@babel/preset-env": "^7.26.0",
+    "@types/eslint": "^9.6.1",
+    "@types/eslint__eslintrc": "^2.1.2",
     "@types/eslint__js": "^8.42.3",
-    "@types/jest": "^29.5.12",
-    "@types/lodash": "^4.17.4",
+    "@types/jest": "^29.5.14",
+    "@types/lodash": "^4.17.13",
     "babel-jest": "^29.7.0",
-    "eslint-plugin-unicorn": "^53.0.0",
+    "eslint-plugin-unicorn": "^56.0.0",
     "jest": "^29.7.0",
-    "mikey-pro": "^7.5.2",
-    "ts-jest": "^29.1.4",
+    "mikey-pro": "^7.5.3",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.6.3"
   },
   "homepage": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
   "repository": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
@@ -58,5 +58,6 @@
   },
   "stylelint": {
     "extends": "@mikey-pro/stylelint-config"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
