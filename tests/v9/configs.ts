@@ -1,8 +1,25 @@
-import babelPlugin from '@babel/eslint-plugin';
 import type { Linter } from 'eslint';
-import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 
-import disableAutofix from 'eslint-plugin-disable-autofix';
+// Mock plugins for testing
+const babelPlugin = {
+  rules: {
+    'object-curly-spacing': {
+      meta: { fixable: 'whitespace' },
+      create: () => ({}),
+    },
+  },
+};
+
+const eslintPluginUnicorn = {
+  rules: {
+    'prevent-abbreviations': {
+      meta: { fixable: 'code' },
+      create: () => ({}),
+    },
+  },
+};
+
+const disableAutofix = require('../../dist/cjs/index.js');
 
 const baseConfig = {
   languageOptions: {
