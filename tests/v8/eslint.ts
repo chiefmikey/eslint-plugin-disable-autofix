@@ -1,13 +1,13 @@
 import { ESLint } from 'eslint';
 
-const eslint = async (text: string, config: ESLint.ConfigData) => {
+const eslint = async (text: string, config: any) => {
   try {
     const options: ESLint.Options = {
       fix: true,
       overrideConfig: config,
-      useEslintrc: false,
       plugins: {
-        'eslint-plugin-disable-autofix': require('eslint-plugin-disable-autofix') as ESLint.Plugin,
+        'eslint-plugin-disable-autofix':
+          require('../../dist/cjs/index.js') as ESLint.Plugin,
       },
     };
 
