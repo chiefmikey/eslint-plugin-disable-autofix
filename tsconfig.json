@@ -1,13 +1,11 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es6"
-    ],
-    "moduleResolution": "Node",
+    "lib": ["es2021"],
+    "moduleResolution": "node",
     "module": "ESNext",
-    "target": "es6",
-    "sourceMap": false,
-    "allowJs": true,
+    "target": "es2021",
+    "sourceMap": true,
+    "allowJs": false,
     "strict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -15,16 +13,19 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": false,
     "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "outDir": "./dist",
-    "types": [
-      "jest"
-    ],
+    "declaration": true,
+    "declarationMap": true,
+    "types": ["node", "jest", "eslint"],
     "paths": {
-      "./*.ts": [
-        "./*"
-      ]
+      "./*.ts": ["./*"]
     }
   },
   "include": [
