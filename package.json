@@ -12,6 +12,11 @@
   "scripts": {
     "build": "node scripts/build.js",
     "test": "jest",
+    "test:unit": "jest --testMatch='**/simple.test.ts'",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --ci --coverage --watchAll=false",
+    "test:debug": "jest --detectOpenHandles --forceExit",
     "lint": "eslint src/**/*.ts tests/**/*.ts",
     "lint:fix": "eslint src/**/*.ts tests/**/*.ts --fix",
     "type-check": "tsc --noEmit",

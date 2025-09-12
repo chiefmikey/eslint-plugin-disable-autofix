@@ -1,0 +1,152 @@
+name: Release Management
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - 'patch'
+          - 'minor'
+          - 'major'
+      prerelease:
+        description: 'Create prerelease'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build package
+      run: npm run build
+
+    - name: Run tests
+      run: npm run test:coverage
+
+    - name: Publish to NPM
+      run: npm publish --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: Release ${{ github.ref_name }}
+        body: |
+          ## What's Changed
+
+          See [CHANGELOG.md](CHANGELOG.md) for detailed changes.
+
+          ## Installation
+
+          ```bash
+          npm install eslint-plugin-disable-autofix@${{ github.ref_name }}
+          ```
+
+          ## Usage
+
+          See [README.md](README.md) for usage instructions.
+        draft: false
+        prerelease: false
+
+  version-bump:
+    name: Version Bump
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Configure Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run tests
+      run: npm run test:coverage
+
+    - name: Bump version
+      run: |
+        npm version ${{ inputs.version_type }} --no-git-tag-version
+        NEW_VERSION=$(node -p "require('./package.json').version")
+        echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+    - name: Update CHANGELOG
+      run: |
+        echo "## [$NEW_VERSION] - $(date +%Y-%m-%d)" >> CHANGELOG.tmp
+        echo "" >> CHANGELOG.tmp
+        echo "### Added" >> CHANGELOG.tmp
+        echo "- " >> CHANGELOG.tmp
+        echo "" >> CHANGELOG.tmp
+        echo "### Changed" >> CHANGELOG.tmp
+        echo "- " >> CHANGELOG.tmp
+        echo "" >> CHANGELOG.tmp
+        echo "### Fixed" >> CHANGELOG.tmp
+        echo "- " >> CHANGELOG.tmp
+        echo "" >> CHANGELOG.tmp
+        echo "" >> CHANGELOG.tmp
+        cat CHANGELOG.md >> CHANGELOG.tmp
+        mv CHANGELOG.tmp CHANGELOG.md
+
+    - name: Commit changes
+      run: |
+        git add package.json package-lock.json CHANGELOG.md
+        git commit -m "chore: bump version to $NEW_VERSION"
+        git push
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        title: "chore: bump version to ${{ env.NEW_VERSION }}"
+        body: |
+          This PR bumps the version to ${{ env.NEW_VERSION }}.
+
+          **Version Type:** ${{ inputs.version_type }}
+          **New Version:** ${{ env.NEW_VERSION }}
+
+          Please review and merge to trigger the release.
+        branch: version-bump-${{ env.NEW_VERSION }}
+        delete-branch: true

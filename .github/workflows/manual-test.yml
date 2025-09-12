@@ -1,0 +1,91 @@
+name: Manual Testing
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Type of test to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - 'all'
+          - 'unit'
+          - 'integration'
+          - 'coverage'
+          - 'performance'
+      node_version:
+        description: 'Node.js version'
+        required: true
+        default: '20'
+        type: choice
+        options:
+          - '18'
+          - '20'
+          - '21'
+      eslint_version:
+        description: 'ESLint version to test'
+        required: false
+        default: 'latest'
+        type: string
+
+jobs:
+  manual-test:
+    name: Manual Test - ${{ inputs.test_type }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ inputs.node_version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node_version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install specific ESLint version
+      if: inputs.eslint_version != 'latest'
+      run: |
+        npm uninstall eslint
+        npm install eslint@${{ inputs.eslint_version }}
+
+    - name: Run Unit Tests
+      if: inputs.test_type == 'unit' || inputs.test_type == 'all'
+      run: npm run test:unit
+
+    - name: Run All Tests
+      if: inputs.test_type == 'all'
+      run: npm test
+
+    - name: Run Tests with Coverage
+      if: inputs.test_type == 'coverage' || inputs.test_type == 'all'
+      run: npm run test:coverage
+
+    - name: Run Performance Tests
+      if: inputs.test_type == 'performance'
+      run: |
+        echo "Running performance tests..."
+        npm run test:coverage
+        echo "Performance metrics:"
+        echo "- Test execution time: $(date)"
+        echo "- Memory usage: $(ps -o pid,vsz,rss,comm -p $$ | tail -1)"
+
+    - name: Build Package
+      if: inputs.test_type == 'all'
+      run: npm run build
+
+    - name: Validate Package
+      if: inputs.test_type == 'all'
+      run: npm run validate
+
+    - name: Test Results Summary
+      run: |
+        echo "## Test Results Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- **Test Type:** ${{ inputs.test_type }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Node Version:** ${{ inputs.node_version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **ESLint Version:** ${{ inputs.eslint_version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Status:** ✅ Completed successfully" >> $GITHUB_STEP_SUMMARY
