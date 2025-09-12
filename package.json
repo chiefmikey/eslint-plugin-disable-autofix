@@ -3,52 +3,21 @@
   "version": "5.1.0",
   "description": "Disable autofix for ESLint rules without turning them off",
   "main": "dist/index.js",
-  "types": "dist/types/index.d.ts",
-  "typings": "dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "require": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
-  },
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "dist/types",
     "LICENSE",
     "README.md"
   ],
   "scripts": {
-    "build": "node scripts/build.js && sed -i '' -e 's/exports\\.default/module.exports/g' ./dist/cjs/index.js",
-    "gh-build": "tsc -p tsconfig.build.json && sed -i -e 's/exports\\.default/module.exports/g' ./dist/index.js && sed -i -e 's/export default/export =/g' ./dist/index.d.ts",
-    "gh-test": "npm run gh-build && jest tests/v9",
-    "gh-test-v8": "npm run gh-build && jest tests/v8",
-    "major": "npm version major; cd dist && npm version major",
-    "minor": "npm version minor; cd dist && npm version minor",
-    "ncu": "ncu -u; cd dist && ncu -u;",
-    "node": "node dist/index.js",
-    "patch": "npm version patch; cd dist && npm version patch",
-    "publish": "cd dist && npm publish --access public",
-    "test": "npm run build && npm i ./dist && jest --config=jest.config.ts tests/v9",
-    "test:pin": "jest --config=jest.config.ts tests/v9",
-    "test:all": "npm run test && npm run gh-test-v8 && npm run gh-test-v9",
+    "build": "node scripts/build.js",
+    "test": "jest",
     "lint": "eslint src/**/*.ts tests/**/*.ts",
     "lint:fix": "eslint src/**/*.ts tests/**/*.ts --fix",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "format:check": "prettier --check \"src/**/*.ts\"",
     "type-check": "tsc --noEmit",
-    "prepublishOnly": "npm run build && npm run test",
     "validate": "npm run lint && npm run type-check && npm run test",
-    "validate:ci": "npm run lint && npm run type-check && npm run test:all",
-    "coverage": "jest --coverage",
-    "coverage:ci": "jest --coverage --ci --coverageReporters=text-lcov | coveralls",
-    "benchmark": "jest tests/benchmark.test.ts",
-    "benchmark:ci": "jest tests/benchmark.test.ts --ci --verbose",
-    "preversion": "npm run validate",
-    "postversion": "git push && git push --tags",
-    "clean": "rm -rf dist node_modules/.cache",
-    "dev": "npm run build && npm run test -- --watch",
-    "docs": "npm run build && npm run format:check"
+    "prepublishOnly": "npm run build && npm run test",
+    "clean": "rm -rf dist node_modules/.cache"
   },
   "dependencies": {
     "ajv": "^8.17.1",

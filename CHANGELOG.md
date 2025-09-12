@@ -8,37 +8,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [5.1.0] - 2024-12-19
 
 ### Added
-- **Performance Modes**: New `performanceMode` option with 'fast', 'balanced', and 'thorough' modes
-- **Advanced Rule Filtering**: New `ruleWhitelist` and `ruleBlacklist` options for precise control
-- **Custom Rule Prefix**: New `customRulePrefix` option to customize rule naming
-- **Error Recovery**: New `errorRecovery` option to handle problematic rules gracefully
-- **Strict Mode**: New `strictMode` option for enhanced rule validation
-- **Auto-detection Control**: New `autoDetectPlugins` option to control plugin discovery
-- **Enhanced Migration Helpers**: New `generateConfigForVersion` and `validateConfig` helpers
-- **Comprehensive Documentation**: Added troubleshooting, migration guides, and advanced configuration examples
-- **GitHub Actions CI/CD**: Automated testing, building, and publishing pipeline
-- **Performance Monitoring**: Enhanced statistics tracking and performance metrics
+- Performance modes: `fast`, `balanced`, `thorough`
+- Advanced rule filtering: `ruleWhitelist` and `ruleBlacklist` options
+- Custom rule prefix: `customRulePrefix` option
+- Error recovery: `errorRecovery` option for graceful error handling
+- Strict mode: `strictMode` option for enhanced validation
+- Auto-detection control: `autoDetectPlugins` option
+- Migration helpers: `generateConfigForVersion` and `validateConfig`
+- GitHub Actions CI/CD pipeline
+- Performance monitoring and statistics tracking
 
 ### Enhanced
-- **Error Handling**: Improved error recovery and logging throughout the plugin
-- **Plugin Loading**: Better error handling for scoped and regular plugins
-- **Rule Processing**: Enhanced validation and processing with better error messages
-- **Caching System**: Improved persistent caching with better error handling
-- **TypeScript Support**: Enhanced type definitions and better IDE support
-- **Documentation**: Comprehensive README with examples, troubleshooting, and migration guides
+- Error handling and logging throughout the plugin
+- Plugin loading for scoped and regular plugins
+- Rule processing with better validation and error messages
+- Caching system with improved error handling
+- TypeScript support with enhanced type definitions
+- Documentation with comprehensive examples and troubleshooting
 
 ### Fixed
-- **Memory Leaks**: Fixed potential memory leaks in long-running processes
-- **Cache Invalidation**: Improved cache invalidation and TTL handling
-- **Rule Validation**: Fixed rule schema validation issues
-- **Plugin Detection**: Improved plugin detection in monorepo setups
-- **Error Messages**: More descriptive error messages and warnings
-
-### Performance
-- **Faster Loading**: Optimized plugin loading with performance modes
-- **Better Caching**: Improved caching strategy for better performance
-- **Memory Usage**: Reduced memory footprint in fast mode
-- **Startup Time**: Faster plugin initialization
+- Memory leaks in long-running processes
+- Cache invalidation and TTL handling
+- Rule schema validation issues
+- Plugin detection in monorepo setups
+- Error messages and warnings
 
 ## [5.0.1] - 2024-05-15
 
@@ -191,38 +184,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Basic autofix disabling functionality
 - ESLint v3+ support
 - Simple configuration
-
----
-
-## Migration Guide
-
-### From v4 to v5
-
-1. Update package: `npm install eslint-plugin-disable-autofix@latest`
-2. Update Node.js to 14.17.0 or higher
-3. Update ESLint to 7.0.0 or higher
-4. All existing configurations continue to work
-5. Consider enabling new features for better performance
-
-### From v3 to v4
-
-1. Update package: `npm install eslint-plugin-disable-autofix@latest`
-2. Update configuration format if using custom setup
-3. All existing configurations continue to work
-
-### From v2 to v3
-
-1. Update package: `npm install eslint-plugin-disable-autofix@latest`
-2. Update configuration format
-3. Check for breaking changes in plugin structure
-
----
-
-## Support
-
-For questions, issues, or contributions:
-
-- 📖 [Documentation](https://github.com/chiefmikey/eslint-plugin-disable-autofix#readme)
-- 🐛 [Report Issues](https://github.com/chiefmikey/eslint-plugin-disable-autofix/issues)
-- 💬 [Discussions](https://github.com/chiefmikey/eslint-plugin-disable-autofix/discussions)
-- 📧 [Email Support](mailto:wolfe@mikl.io)

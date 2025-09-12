@@ -1,38 +1,22 @@
 {
   "compilerOptions": {
-    "lib": ["es2021"],
-    "moduleResolution": "node",
-    "module": "ESNext",
     "target": "es2021",
-    "sourceMap": true,
-    "allowJs": false,
+    "module": "commonjs",
+    "lib": ["es2021"],
+    "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": false,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "removeComments": true,
-    "preserveConstEnums": true,
-    "outDir": "./dist",
     "declaration": true,
     "declarationMap": true,
-    "types": ["node", "jest", "eslint"],
-    "paths": {
-      "./*.ts": ["./*"]
-    }
+    "sourceMap": true,
+    "removeComments": true,
+    "types": ["node", "jest", "eslint"]
   },
   "include": [
-    "index.d.ts",
-    "tests/**/*.ts",
-    "src/**/*.ts",
-    "jest.config.*"
+    "src/**/*",
+    "tests/**/*"
   ],
   "exclude": [
     "node_modules",

@@ -1,24 +1,8 @@
-# Contributing to eslint-plugin-disable-autofix
+# Contributing
 
-Thank you for your interest in contributing to eslint-plugin-disable-autofix! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to eslint-plugin-disable-autofix!
 
-## Table of Contents
-
-- [Code of Conduct](#code-of-conduct)
-- [Getting Started](#getting-started)
-- [Development Setup](#development-setup)
-- [Making Changes](#making-changes)
-- [Testing](#testing)
-- [Submitting Changes](#submitting-changes)
-- [Issue Guidelines](#issue-guidelines)
-- [Pull Request Guidelines](#pull-request-guidelines)
-- [Release Process](#release-process)
-
-## Code of Conduct
-
-This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
-
-## Getting Started
+## Development Setup
 
 ### Prerequisites
 
@@ -26,11 +10,10 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 - npm 7 or higher
 - Git
 
-### Development Setup
+### Getting Started
 
-1. **Fork the repository**
+1. **Fork and clone the repository**
    ```bash
-   # Fork on GitHub, then clone your fork
    git clone https://github.com/your-username/eslint-plugin-disable-autofix.git
    cd eslint-plugin-disable-autofix
    ```
@@ -50,9 +33,7 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
    npm test
    ```
 
-## Development
-
-### Project Structure
+## Project Structure
 
 ```
 eslint-plugin-disable-autofix/
@@ -65,11 +46,10 @@ eslint-plugin-disable-autofix/
 │   ├── v9/               # ESLint v9 tests
 │   └── benchmark.test.ts # Performance tests
 ├── benchmark/             # Benchmark files
-├── .github/              # GitHub workflows
-└── docs/                 # Documentation
+└── .github/              # GitHub workflows
 ```
 
-### Making Changes
+## Making Changes
 
 1. **Create a feature branch**
    ```bash
@@ -113,18 +93,12 @@ npm run lint
 npx tsc --noEmit
 ```
 
-### Test Structure
-
-- **Unit Tests**: Test individual functions and modules
-- **Integration Tests**: Test plugin functionality with ESLint
-- **Performance Tests**: Benchmark plugin performance
-- **Compatibility Tests**: Test with different ESLint versions
-
 ### Writing Tests
 
-1. **Unit Tests**: Add tests in the appropriate test file
-2. **Integration Tests**: Add tests in `tests/v8/` or `tests/v9/`
-3. **Performance Tests**: Add benchmarks in `benchmark/`
+Add tests in the appropriate test file:
+- Unit tests: Test individual functions and modules
+- Integration tests: Test plugin functionality with ESLint
+- Performance tests: Benchmark plugin performance
 
 Example test:
 
@@ -177,81 +151,25 @@ perf: optimize rule processing
    - Respond to feedback
    - Make requested changes
 
-### Pull Request Template
-
-```markdown
-## Description
-Brief description of changes
-
-## Type of Change
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Breaking change
-- [ ] Documentation update
-- [ ] Performance improvement
-
-## Testing
-- [ ] Tests pass
-- [ ] New tests added
-- [ ] Manual testing completed
-
-## Checklist
-- [ ] Code follows project style
-- [ ] Self-review completed
-- [ ] Documentation updated
-- [ ] No breaking changes (or documented)
-```
-
 ## Issue Guidelines
 
 ### Reporting Bugs
 
-Use the bug report template:
-
-```markdown
-**Describe the bug**
-A clear description of what the bug is.
-
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. See error
-
-**Expected behavior**
-What you expected to happen.
-
-**Environment:**
-- Node.js version:
-- ESLint version:
-- Plugin version:
-- OS:
-
-**Additional context**
-Add any other context about the problem here.
-```
+Include:
+- Clear description of the bug
+- Steps to reproduce
+- Expected behavior
+- Environment details (Node.js, ESLint, OS versions)
 
 ### Feature Requests
 
-Use the feature request template:
-
-```markdown
-**Is your feature request related to a problem?**
-A clear description of what the problem is.
-
-**Describe the solution you'd like**
-A clear description of what you want to happen.
-
-**Describe alternatives you've considered**
-A clear description of any alternative solutions.
-
-**Additional context**
-Add any other context or screenshots about the feature request.
-```
+Include:
+- Description of the problem
+- Proposed solution
+- Alternative solutions considered
+- Additional context
 
 ## Release Process
-
-### Versioning
 
 We use [Semantic Versioning](https://semver.org/):
 - **MAJOR**: Breaking changes
@@ -260,67 +178,13 @@ We use [Semantic Versioning](https://semver.org/):
 
 ### Release Steps
 
-1. **Update version**
-   ```bash
-   npm version patch|minor|major
-   ```
-
-2. **Update changelog**
-   - Add entry to CHANGELOG.md
-   - Include all changes since last release
-
-3. **Create release**
-   - Push tags: `git push --tags`
-   - Create GitHub release
-   - Publish to npm: `npm run publish`
-
-### Release Checklist
-
-- [ ] All tests pass
-- [ ] Documentation updated
-- [ ] Changelog updated
-- [ ] Version bumped
-- [ ] Release notes prepared
-- [ ] Published to npm
-
-## Development Tips
-
-### Debugging
-
-Enable debug mode:
-
-```bash
-DEBUG=1 npm test
-```
-
-### Performance Profiling
-
-Run benchmarks:
-
-```bash
-npm run benchmark
-```
-
-### TypeScript
-
-Use TypeScript for better development experience:
-
-```bash
-npx tsc --watch
-```
+1. Update version: `npm version patch|minor|major`
+2. Update changelog
+3. Create release and publish to npm
 
 ## Getting Help
 
-- 📖 [Documentation](https://github.com/chiefmikey/eslint-plugin-disable-autofix#readme)
-- 🐛 [Report Issues](https://github.com/chiefmikey/eslint-plugin-disable-autofix/issues)
-- 💬 [Discussions](https://github.com/chiefmikey/eslint-plugin-disable-autofix/discussions)
-- 📧 [Email Support](mailto:wolfe@mikl.io)
-
-## Recognition
-
-Contributors will be recognized in:
-- README.md contributors section
-- Release notes
-- GitHub contributors page
-
-Thank you for contributing to eslint-plugin-disable-autofix! 🎉
+- [Documentation](https://github.com/chiefmikey/eslint-plugin-disable-autofix#readme)
+- [Report Issues](https://github.com/chiefmikey/eslint-plugin-disable-autofix/issues)
+- [Discussions](https://github.com/chiefmikey/eslint-plugin-disable-autofix/discussions)
+- [Email Support](mailto:wolfe@mikl.io)
