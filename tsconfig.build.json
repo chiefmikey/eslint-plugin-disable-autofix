@@ -1,38 +1,23 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es6"
-    ],
+    "lib": ["es2022"],
     "moduleResolution": "Node",
     "module": "CommonJS",
-    "target": "es6",
+    "target": "es2022",
+    "rootDir": "./src",
+    "outDir": "./dist",
     "sourceMap": false,
-    "allowJs": true,
     "strict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "noEmit": false,
     "noImplicitAny": true,
     "removeComments": true,
-    "preserveConstEnums": true,
-    "outDir": "./dist",
-    "paths": {
-      "./*.ts": [
-        "./*"
-      ]
-    }
+    "preserveConstEnums": true
   },
-  "files": [
-    "./src/index.ts"
-  ],
-  "include": [
-    "./index.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["./src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

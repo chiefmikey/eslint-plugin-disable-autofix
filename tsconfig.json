@@ -1,31 +1,22 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es6"
-    ],
+    "lib": ["es2022"],
     "moduleResolution": "Node",
     "module": "ESNext",
-    "target": "es6",
+    "target": "es2022",
     "sourceMap": false,
     "allowJs": true,
     "strict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": false,
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "outDir": "./dist",
-    "types": [
-      "jest"
-    ],
-    "paths": {
-      "./*.ts": [
-        "./*"
-      ]
-    }
+    "types": ["jest"]
   },
   "include": [
     "index.d.ts",

@@ -1,23 +1,26 @@
 # eslint-plugin-disable-autofix
 
 Disable autofix for ESLint rules and prevent them from being formatted without
-having to turn them off.
+having to turn them off. Also strips suggestions.
 
-## Usage
+Works with all ESLint core rules and any third-party plugin installed in your
+project.
 
-### Install
+## Install
 
 ```sh
 npm i -D eslint-plugin-disable-autofix
 ```
 
-### Configure
+## Configure
 
-Import and include `disable-autofix` in the `plugins` object
+Import and include `disable-autofix` in the `plugins` object.
 
-Add prefix `disable-autofix/` to the rule and disable the original
+Add prefix `disable-autofix/` to the rule and disable the original.
 
-```ts
+### Builtin Rules
+
+```js
 import disableAutofix from 'eslint-plugin-disable-autofix';
 
 export default [
@@ -33,9 +36,9 @@ export default [
 ];
 ```
 
-Using 3rd-party Rules
+### Third-Party Plugin Rules
 
-```ts
+```js
 import disableAutofix from 'eslint-plugin-disable-autofix';
 import react from 'eslint-plugin-react';
 
@@ -53,9 +56,9 @@ export default [
 ];
 ```
 
-Using Scoped Rules
+### Scoped Plugin Rules
 
-```ts
+```js
 import disableAutofix from 'eslint-plugin-disable-autofix';
 import htmlEslint from '@html-eslint/eslint-plugin';
 
@@ -76,45 +79,24 @@ export default [
 ];
 ```
 
-### Configure Legacy
+## Features
 
-Include `disable-autofix` in the `eslintrc` plugins array
+- Disables autofix (`--fix`) for any ESLint rule
+- Strips suggestions from rule reports
+- Supports ESLint core rules
+- Supports third-party plugins (`eslint-plugin-*`)
+- Supports scoped plugins (`@scope/eslint-plugin-*`)
+- Auto-discovers all installed plugins
+- Zero configuration required
+- ESLint 9+ flat config
 
-Add prefix `disable-autofix/` to the rule and disable the original
+## How It Works
 
-```js
-module.exports = {
-  plugins: ['disable-autofix'],
-  rules: {
-    'prefer-const': 'off',
-    'disable-autofix/prefer-const': 'warn',
-  },
-};
-```
+The plugin scans your `node_modules` for ESLint and all installed ESLint
+plugins. For each rule found, it creates a wrapped version that intercepts
+reported problems and removes the `fix` and `suggest` properties. The wrapped
+rules are exported with the `disable-autofix/` prefix.
 
-Using 3rd-party Rules
-
-```js
-module.exports = {
-  plugins: ['disable-autofix', 'react'],
-  rules: {
-    'react/jsx-indent': 'off',
-    'disable-autofix/react/jsx-indent': 'error',
-  },
-};
-```
-
-Using Scoped Rules
-
-```js
-module.exports = {
-  plugins: ['disable-autofix', '@html-eslint'],
-  rules: {
-    '@html-eslint/require-closing-tags': 'off',
-    'disable-autofix/@html-eslint/require-closing-tags': [
-      'error',
-      { selfClosing: 'always' },
-    ],
-  },
-};
-```
+When ESLint runs with `--fix`, the original rule is disabled (`'off'`) and the
+wrapped rule reports violations without providing a fix — so the code stays
+unchanged.

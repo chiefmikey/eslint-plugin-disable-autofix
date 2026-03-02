@@ -1,10 +1,11 @@
 import { describe, expect, it } from '@jest/globals';
 import type { Linter } from 'eslint';
 
-import { builtin, unicorn, babel } from './configs';
+import { builtin, unicorn, babel, suggestions } from './configs';
 import eslint from './eslint';
+import { lintWithMessages } from './eslint';
 
-describe('test rule fix disable', () => {
+describe('disable autofix', () => {
   it('fixes the builtin rule', async () => {
     expect.hasAssertions();
     const inputText = 'let test = true;';
@@ -63,5 +64,49 @@ describe('test rule fix disable', () => {
     )) as Linter.FixReport;
     expect(results.output).toBe(inputText);
     expect(results.fixed).toBe(false);
+  });
+});
+
+describe('disable suggestions', () => {
+  it('reports suggestions on the original rule', async () => {
+    expect.hasAssertions();
+    const inputText = 'console.log("test")';
+    const results = await lintWithMessages(inputText, suggestions.fix);
+    const message = results[0];
+    expect(message.suggestions).toBeDefined();
+    expect(message.suggestions!.length).toBeGreaterThan(0);
+  });
+
+  it('strips suggestions on the disabled rule', async () => {
+    expect.hasAssertions();
+    const inputText = 'console.log("test")';
+    const results = await lintWithMessages(inputText, suggestions.disable);
+    expect(results.length).toBeGreaterThan(0);
+    const message = results[0];
+    expect(message.suggestions).toBeUndefined();
+  });
+});
+
+describe('metadata stripping', () => {
+  it('removes fixable from rule meta', () => {
+    expect.hasAssertions();
+    const disableAutofix = require('eslint-plugin-disable-autofix');
+    expect(disableAutofix.rules['prefer-const'].meta?.fixable).toBeUndefined();
+  });
+
+  it('removes hasSuggestions from rule meta', () => {
+    expect.hasAssertions();
+    const disableAutofix = require('eslint-plugin-disable-autofix');
+    expect(
+      disableAutofix.rules['no-console'].meta?.hasSuggestions,
+    ).toBeUndefined();
+  });
+
+  it('preserves other meta properties', () => {
+    expect.hasAssertions();
+    const disableAutofix = require('eslint-plugin-disable-autofix');
+    const meta = disableAutofix.rules['prefer-const'].meta;
+    expect(meta?.type).toBeDefined();
+    expect(meta?.docs).toBeDefined();
   });
 });

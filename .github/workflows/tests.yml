@@ -8,9 +8,12 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  test-v9:
-    name: Test v9
+  test:
+    name: Test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['20', '22']
     steps:
     - name: Check Out
       uses: actions/checkout@v4
@@ -18,31 +21,10 @@ jobs:
     - name: Set Up
       uses: actions/setup-node@v4
       with:
-        node-version: 'latest'
+        node-version: ${{ matrix.node-version }}
 
     - name: Install
       run: npm i
 
-    - name: Test v9
+    - name: Test
       run: npm run gh-test
-
-  test-v8:
-    name: Test v8
-    runs-on: ubuntu-latest
-    steps:
-    - name: Check Out
-      uses: actions/checkout@v4
-
-    - name: Set Up
-      uses: actions/setup-node@v4
-      with:
-        node-version: 'latest'
-
-    - name: Install
-      run: |
-        npm i
-        npm rm eslint
-        npm i eslint@8
-
-    - name: Test v8
-      run: npm run gh-test-v8

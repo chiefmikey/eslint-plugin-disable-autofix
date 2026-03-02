@@ -1,40 +1,32 @@
 {
   "name": "eslint-plugin-disable-autofix",
-  "version": "5.0.1",
+  "version": "6.0.0",
   "description": "Disable autofix for ESLint rules without turning them off",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && sed -i '' -e 's/exports\\.default/module.exports/g' ./dist/index.js && sed -i '' -e 's/export default/export =/g' ./dist/index.d.ts",
-    "gh-build": "tsc -p tsconfig.build.json && sed -i -e 's/exports\\.default/module.exports/g' ./dist/index.js && sed -i -e 's/export default/export =/g' ./dist/index.d.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "gh-build": "tsc -p tsconfig.build.json",
+    "test": "npm run build && npm i ./dist && jest --config=jest.config.ts tests/v9",
+    "test:pin": "jest --config=jest.config.ts tests/v9",
     "gh-test": "npm run gh-build && jest tests/v9",
-    "gh-test-v8": "npm run gh-build && jest tests/v8",
     "major": "npm version major; cd dist && npm version major",
     "minor": "npm version minor; cd dist && npm version minor",
-    "ncu": "ncu -u; cd dist && ncu -u;",
-    "node": "node dist/index.js",
     "patch": "npm version patch; cd dist && npm version patch",
-    "publish": "cd dist && npm publish --access public",
-    "test": "npm run build && npm i ./dist && jest --config=jest.config.ts tests/v9",
-    "test:pin": "jest --config=jest.config.ts tests/v9"
+    "ncu": "ncu -u; cd dist && ncu -u;",
+    "publish": "cd dist && npm publish --access public"
   },
   "dependencies": {
-    "app-root-path": "^3.1.0",
     "eslint": "^9.3.0",
     "eslint-plugin-disable-autofix": "file:dist",
-    "eslint-rule-composer": "^0.3.0",
-    "lodash": "^4.17.21"
+    "eslint-rule-composer": "^0.3.0"
   },
   "devDependencies": {
     "@babel/eslint-plugin": "^7.24.6",
     "@babel/preset-env": "^7.24.6",
-    "@types/eslint": "^8.56.10",
-    "@types/eslint__eslintrc": "^2.1.1",
-    "@types/eslint__js": "^8.42.3",
+    "@types/eslint": "^9.6.0",
     "@types/jest": "^29.5.12",
-    "@types/lodash": "^4.17.4",
     "babel-jest": "^29.7.0",
     "eslint-plugin-unicorn": "^53.0.0",
     "jest": "^29.7.0",
-    "mikey-pro": "^7.5.2",
     "ts-jest": "^29.1.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
@@ -49,14 +41,9 @@
     "eslint plugin",
     "disable autofix",
     "disable --fix",
-    "disable fix"
+    "disable fix",
+    "disable suggestions",
+    "eslint flat config"
   ],
-  "author": "Mikl Wolfe <wolfe@mikl.io> (https://github.com/chiefmikey)",
-  "prettier": "@mikey-pro/prettier-config",
-  "eslintConfig": {
-    "extends": "@mikey-pro/eslint-config"
-  },
-  "stylelint": {
-    "extends": "@mikey-pro/stylelint-config"
-  }
+  "author": "Mikl Wolfe <wolfe@mikl.io> (https://github.com/chiefmikey)"
 }
