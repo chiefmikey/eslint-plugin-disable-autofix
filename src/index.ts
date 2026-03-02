@@ -12,14 +12,10 @@ const disabledRules: Record<string, Rule.RuleModule> = {};
 /**
  * Wrap a rule to strip fix, suggest, and fixable/hasSuggestions metadata.
  * Creates a new rule object — never mutates the original.
- *
- * Replaces eslint-rule-composer (unmaintained, uses deprecated ESLint APIs
- * like context.getFilename() that were removed in ESLint 10).
  */
 const disableFix = (rule: Rule.RuleModule): Rule.RuleModule => {
   const result: Rule.RuleModule = {
     create(context) {
-      // Wrap context.report to strip fix and suggest from reported problems
       const wrappedContext = Object.create(context, {
         report: {
           enumerable: true,
@@ -36,7 +32,6 @@ const disableFix = (rule: Rule.RuleModule): Rule.RuleModule => {
     },
   };
 
-  // Build clean meta without fixable/hasSuggestions
   if (rule.meta) {
     const { fixable, hasSuggestions, ...cleanMeta } = rule.meta as Record<
       string,
@@ -85,7 +80,6 @@ const findNodeModules = (): string => {
 const safeRequire = (id: string): PluginExport | undefined => {
   try {
     const mod = require(id) as Record<string, unknown>;
-    // Unwrap ESM default exports
     if (mod.__esModule && mod.default && typeof mod.default === 'object') {
       return mod.default as PluginExport;
     }

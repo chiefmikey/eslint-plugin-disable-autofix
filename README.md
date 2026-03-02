@@ -1,12 +1,10 @@
 # eslint-plugin-disable-autofix
 
-Disable autofix for ESLint rules and prevent them from being formatted without
-having to turn them off. Also strips suggestions from IDE lightbulb menus.
+Disable autofix for ESLint rules without turning them off.
 
-Supports ESLint 9 and 10 (flat config). Works with all ESLint core rules and
-any third-party plugin installed in your project, including ESM-only plugins.
+Wraps any rule to strip `fix` and `suggest` from `context.report()`, preventing `--fix` and IDE quick-fix suggestions from modifying code. The original violation is still reported.
 
-Zero dependencies.
+Works with ESLint 9 and 10 flat config. Supports builtin rules, third-party plugins, scoped plugins, and ESM-only plugins. Auto-discovers all installed plugins. Zero dependencies.
 
 ## Install
 
@@ -14,22 +12,15 @@ Zero dependencies.
 npm i -D eslint-plugin-disable-autofix
 ```
 
-## Configure
-
-Import and include `disable-autofix` in the `plugins` object.
-
-Add prefix `disable-autofix/` to the rule and disable the original.
-
-### Builtin Rules
+## Usage
 
 ```js
+// eslint.config.js
 import disableAutofix from 'eslint-plugin-disable-autofix';
 
 export default [
   {
-    plugins: {
-      'disable-autofix': disableAutofix,
-    },
+    plugins: { 'disable-autofix': disableAutofix },
     rules: {
       'prefer-const': 'off',
       'disable-autofix/prefer-const': 'warn',
@@ -38,39 +29,23 @@ export default [
 ];
 ```
 
-### Third-Party Plugin Rules
+Third-party and scoped plugins work the same way:
 
 ```js
 import disableAutofix from 'eslint-plugin-disable-autofix';
 import react from 'eslint-plugin-react';
-
-export default [
-  {
-    plugins: {
-      'disable-autofix': disableAutofix,
-      react,
-    },
-    rules: {
-      'react/jsx-indent': 'off',
-      'disable-autofix/react/jsx-indent': 'error',
-    },
-  },
-];
-```
-
-### Scoped Plugin Rules
-
-```js
-import disableAutofix from 'eslint-plugin-disable-autofix';
 import stylistic from '@stylistic/eslint-plugin';
 
 export default [
   {
     plugins: {
       'disable-autofix': disableAutofix,
+      react,
       '@stylistic': stylistic,
     },
     rules: {
+      'react/jsx-indent': 'off',
+      'disable-autofix/react/jsx-indent': 'error',
       '@stylistic/semi': 'off',
       'disable-autofix/@stylistic/semi': ['error', 'always'],
     },
@@ -78,27 +53,10 @@ export default [
 ];
 ```
 
-## Features
+## How it works
 
-- Disables autofix (`--fix`) for any ESLint rule
-- Strips suggestions from IDE lightbulb menus
-- Supports ESLint core rules
-- Supports third-party plugins (`eslint-plugin-*`)
-- Supports scoped plugins (`@scope/eslint-plugin-*`)
-- Handles ESM-only plugins automatically
-- Auto-discovers all installed plugins
-- Zero runtime dependencies
-- ESLint 9 and 10 flat config
-- Zero configuration required
+The plugin scans `node_modules` for ESLint and all installed ESLint plugins. For each rule, it creates a wrapped version that intercepts `context.report()` and deletes the `fix` and `suggest` properties before forwarding. It also removes `fixable` and `hasSuggestions` from rule metadata so ESLint and IDEs don't advertise fixes.
 
-## How It Works
+## License
 
-The plugin scans your `node_modules` for ESLint and all installed ESLint
-plugins. For each rule found, it creates a wrapped version that intercepts
-`context.report()` calls and removes the `fix` and `suggest` properties. The
-wrapped rules are exported with the `disable-autofix/` prefix.
-
-When ESLint runs with `--fix`, the original rule is disabled (`'off'`) and the
-wrapped rule reports violations without providing a fix — so the code stays
-unchanged. Suggestions are also stripped, preventing accidental fixes through
-IDE lightbulb menus.
+MIT

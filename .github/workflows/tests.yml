@@ -27,4 +27,4 @@ jobs:
       run: npm i
 
     - name: Test
-      run: npm run gh-test
+      run: npm run ci
