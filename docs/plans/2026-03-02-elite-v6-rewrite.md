@@ -135,12 +135,22 @@ Make eslint-plugin-disable-autofix the definitive, elite choice for disabling ES
 - Added metadata stripping tests as recommended
 - All 11 tests pass after review fixes
 
+### Step 6-8: Phase 2 — ESLint 10, drop eslint-rule-composer, comprehensive tests
+- Upgraded ESLint to 10.0.2 — discovered eslint-rule-composer broken (uses removed context.getFilename/getSourceCode)
+- **Dropped eslint-rule-composer entirely** — wrote own 15-line context.report wrapping via Object.create
+- Fixed ESM default export unwrapping: unicorn v63+ wraps as `{ __esModule: true, default: { rules } }` — safeRequire now detects and unwraps
+- Replaced @babel/eslint-plugin (incompatible with ESLint 10) with @stylistic/eslint-plugin
+- Split test architecture: Jest for behavioral (builtin rules), Node.js native `node:test` for ESM integration
+- Upgraded all deps: TypeScript 5.9.3, Jest 30.2.0, ts-jest 29.4.6, @types/jest 30.0.0
+- 28 tests total: 21 Jest + 7 integration — all pass
+- Zero runtime dependencies achieved
+
 ## Summary
 
-Complete v6.0.0 rewrite:
-- **Dependencies**: Removed lodash (50KB) and app-root-path (5KB). Only runtime dep is eslint-rule-composer.
+Complete v6.0.0 rewrite across two phases:
+- **Dependencies**: ZERO runtime dependencies. Removed lodash, app-root-path, AND eslint-rule-composer.
 - **Build**: Clean tsc output, no sed post-processing, proper export = syntax
-- **Bug fixes**: ESM plugin crash (Issue #59) fixed by never mutating imports. Version mismatch fixed.
-- **New features**: Suggestion stripping (unique vs all competitors)
-- **Tests**: 11 tests (6 autofix, 2 suggestions, 3 metadata)
-- **ESLint support**: 9+ (flat config)
+- **Bug fixes**: ESM plugin crash (Issue #59), ESM default export unwrapping, eslint-rule-composer removed
+- **New features**: Suggestion stripping (unique vs all competitors), ESLint 10 compatibility
+- **Tests**: 28 tests (21 Jest behavioral + 7 native Node.js integration for ESM)
+- **ESLint support**: 9 and 10 (flat config only)
