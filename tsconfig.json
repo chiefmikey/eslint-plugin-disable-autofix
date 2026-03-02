@@ -19,9 +19,8 @@
     "types": ["jest"]
   },
   "include": [
-    "index.d.ts",
-    "tests/**/*.ts",
     "src/**/*.ts",
+    "tests/**/*.ts",
     "jest.config.*"
   ],
   "exclude": [
