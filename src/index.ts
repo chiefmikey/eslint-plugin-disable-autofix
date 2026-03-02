@@ -2,46 +2,43 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import type { Rule } from 'eslint';
-import ruleComposer from 'eslint-rule-composer';
-
-interface MappedRule {
-  create: Rule.RuleModule['create'];
-  meta?: Rule.RuleMetaData;
-}
-
-type MapReports = (
-  rule: Rule.RuleModule,
-  iteratee: (problem: Record<string, unknown>) => Record<string, unknown>,
-) => MappedRule;
 
 interface PluginExport {
   rules?: Record<string, Rule.RuleModule>;
 }
 
-const mapReports = (ruleComposer as { mapReports: MapReports }).mapReports;
 const disabledRules: Record<string, Rule.RuleModule> = {};
 
 /**
- * Wrap a rule to strip fix, suggest, and fixable metadata.
+ * Wrap a rule to strip fix, suggest, and fixable/hasSuggestions metadata.
  * Creates a new rule object — never mutates the original.
+ *
+ * Replaces eslint-rule-composer (unmaintained, uses deprecated ESLint APIs
+ * like context.getFilename() that were removed in ESLint 10).
  */
 const disableFix = (rule: Rule.RuleModule): Rule.RuleModule => {
-  const mapped = mapReports(rule, (problem) => {
-    delete problem.fix;
-    // suggest is stripped by eslint-rule-composer's normalizer today,
-    // but delete defensively in case a future version passes it through
-    delete problem.suggest;
-    return problem;
-  });
-
-  // Spread the frozen mapped result into a new mutable object
   const result: Rule.RuleModule = {
-    create: mapped.create,
+    create(context) {
+      // Wrap context.report to strip fix and suggest from reported problems
+      const wrappedContext = Object.create(context, {
+        report: {
+          enumerable: true,
+          value(descriptor: Record<string, unknown>) {
+            const cleaned = { ...descriptor };
+            delete cleaned.fix;
+            delete cleaned.suggest;
+            context.report(cleaned as unknown as Parameters<Rule.RuleContext['report']>[0]);
+          },
+        },
+      });
+
+      return rule.create(wrappedContext);
+    },
   };
 
   // Build clean meta without fixable/hasSuggestions
-  if (mapped.meta) {
-    const { fixable, hasSuggestions, ...cleanMeta } = mapped.meta as Record<
+  if (rule.meta) {
+    const { fixable, hasSuggestions, ...cleanMeta } = rule.meta as Record<
       string,
       unknown
     >;
@@ -81,11 +78,18 @@ const findNodeModules = (): string => {
 
 /**
  * Safely require a module, returning undefined on failure.
- * Handles ESM-only packages and other load errors gracefully.
+ * Handles ESM default exports: when Node.js loads an ESM module via require(),
+ * modules using `export default` are wrapped as { __esModule: true, default: ... }.
+ * This unwraps that pattern to get the actual plugin object.
  */
 const safeRequire = (id: string): PluginExport | undefined => {
   try {
-    return require(id) as PluginExport;
+    const mod = require(id) as Record<string, unknown>;
+    // Unwrap ESM default exports
+    if (mod.__esModule && mod.default && typeof mod.default === 'object') {
+      return mod.default as PluginExport;
+    }
+    return mod as unknown as PluginExport;
   } catch {
     return undefined;
   }
