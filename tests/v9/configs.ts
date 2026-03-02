@@ -18,7 +18,7 @@ export const builtin = {
       'prefer-const': 'warn',
       'eol-last': 'off',
     },
-  } as Linter.FlatConfig,
+  } as Linter.Config,
   disable: {
     ...baseConfig,
     plugins: { 'disable-autofix': disableAutofix },
@@ -28,7 +28,7 @@ export const builtin = {
       'no-unused-vars': 'off',
       'eol-last': 'off',
     },
-  } as Linter.FlatConfig,
+  } as Linter.Config,
 };
 
 export const unicorn = {
@@ -39,7 +39,7 @@ export const unicorn = {
       'unicorn/prevent-abbreviations': 'warn',
       'eol-last': 'off',
     },
-  } as Linter.FlatConfig,
+  } as Linter.Config,
   disable: {
     ...baseConfig,
     plugins: {
@@ -51,7 +51,7 @@ export const unicorn = {
       'disable-autofix/unicorn/prevent-abbreviations': 'warn',
       'eol-last': 'off',
     },
-  } as Linter.FlatConfig,
+  } as Linter.Config,
 };
 
 export const babel = {
@@ -62,7 +62,7 @@ export const babel = {
       '@babel/object-curly-spacing': 'warn',
       'eol-last': 'off',
     },
-  } as Linter.FlatConfig,
+  } as Linter.Config,
   disable: {
     ...baseConfig,
     plugins: { 'disable-autofix': disableAutofix, '@babel': babelPlugin },
@@ -71,5 +71,24 @@ export const babel = {
       'disable-autofix/@babel/object-curly-spacing': 'warn',
       'eol-last': 'off',
     },
-  } as Linter.FlatConfig,
+  } as Linter.Config,
+};
+
+export const suggestions = {
+  fix: {
+    ...baseConfig,
+    rules: {
+      'no-console': 'warn',
+      'eol-last': 'off',
+    },
+  } as Linter.Config,
+  disable: {
+    ...baseConfig,
+    plugins: { 'disable-autofix': disableAutofix },
+    rules: {
+      'no-console': 'off',
+      'disable-autofix/no-console': 'warn',
+      'eol-last': 'off',
+    },
+  } as Linter.Config,
 };
