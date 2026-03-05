@@ -14,8 +14,27 @@ npm i -D eslint-plugin-disable-autofix
 
 ## Usage
 
+### configure()
+
+The `configure()` helper handles the boilerplate of disabling the original rule and enabling the prefixed version:
+
 ```js
 // eslint.config.js
+import disableAutofix from 'eslint-plugin-disable-autofix';
+
+export default [
+  disableAutofix.configure({
+    'prefer-const': 'warn',
+    'semi': ['error', 'always'],
+    '@stylistic/semi': ['error', 'always'],
+    'react/jsx-indent': 'error',
+  }),
+];
+```
+
+### Manual setup
+
+```js
 import disableAutofix from 'eslint-plugin-disable-autofix';
 
 export default [
@@ -29,33 +48,36 @@ export default [
 ];
 ```
 
-Third-party and scoped plugins work the same way:
+### Selective modes
+
+By default, both autofix and suggestions are stripped. Use `createPlugin()` to strip one or the other:
 
 ```js
 import disableAutofix from 'eslint-plugin-disable-autofix';
-import react from 'eslint-plugin-react';
-import stylistic from '@stylistic/eslint-plugin';
+
+// Strip autofix only — keep IDE suggestions
+const disableFix = disableAutofix.createPlugin({ mode: 'fix' });
+
+// Strip suggestions only — keep autofix
+const disableSuggest = disableAutofix.createPlugin({ mode: 'suggest' });
 
 export default [
-  {
-    plugins: {
-      'disable-autofix': disableAutofix,
-      react,
-      '@stylistic': stylistic,
-    },
-    rules: {
-      'react/jsx-indent': 'off',
-      'disable-autofix/react/jsx-indent': 'error',
-      '@stylistic/semi': 'off',
-      'disable-autofix/@stylistic/semi': ['error', 'always'],
-    },
-  },
+  disableFix.configure({ 'prefer-const': 'warn' }),
+  disableSuggest.configure({ 'no-console': 'warn' }),
 ];
 ```
 
+### Restrict to specific plugins
+
+```js
+const limited = disableAutofix.createPlugin({ plugins: ['react', 'unicorn'] });
+```
+
+Only wraps rules from the listed plugin prefixes. Builtin ESLint rules are always included.
+
 ## How it works
 
-The plugin scans `node_modules` for ESLint and all installed ESLint plugins. For each rule, it creates a wrapped version that intercepts `context.report()` and deletes the `fix` and `suggest` properties before forwarding. It also removes `fixable` and `hasSuggestions` from rule metadata so ESLint and IDEs don't advertise fixes.
+The plugin scans `node_modules` for ESLint and all installed ESLint plugins. Rules are loaded lazily — only when accessed. For each rule, it creates a wrapped version that intercepts `context.report()` and deletes the `fix` and `suggest` properties before forwarding. It also removes `fixable` and `hasSuggestions` from rule metadata so ESLint and IDEs don't advertise fixes.
 
 ## License
 

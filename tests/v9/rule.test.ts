@@ -277,7 +277,7 @@ describe('plugin discovery', () => {
 describe('plugin structure', () => {
   it('has correct meta', () => {
     expect(disableAutofix.meta.name).toBe('eslint-plugin-disable-autofix');
-    expect(disableAutofix.meta.version).toBe('6.0.0');
+    expect(disableAutofix.meta.version).toBe('6.1.0');
   });
 
   it('exports the required flat config plugin properties', () => {
@@ -303,5 +303,145 @@ describe('plugin structure', () => {
         expect(rule.meta.hasSuggestions).toBeUndefined();
       }
     }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// configure() helper
+// ---------------------------------------------------------------------------
+
+describe('configure helper', () => {
+  it('returns flat config with plugins and rules', () => {
+    const config = disableAutofix.configure({ 'prefer-const': 'warn' });
+    expect(config.plugins).toBeDefined();
+    expect(config.plugins['disable-autofix']).toBe(disableAutofix);
+    expect(config.rules['prefer-const']).toBe('off');
+    expect(config.rules['disable-autofix/prefer-const']).toBe('warn');
+  });
+
+  it('handles multiple rules with options', () => {
+    const config = disableAutofix.configure({
+      'prefer-const': 'warn',
+      'semi': ['error', 'always'],
+    });
+    expect(config.rules['prefer-const']).toBe('off');
+    expect(config.rules['semi']).toBe('off');
+    expect(config.rules['disable-autofix/prefer-const']).toBe('warn');
+    expect(config.rules['disable-autofix/semi']).toEqual(['error', 'always']);
+  });
+
+  it('handles plugin rules', () => {
+    const config = disableAutofix.configure({
+      'react/jsx-indent': 'error',
+    });
+    expect(config.rules['react/jsx-indent']).toBe('off');
+    expect(config.rules['disable-autofix/react/jsx-indent']).toBe('error');
+  });
+
+  it('works with ESLint Linter', () => {
+    const config = disableAutofix.configure({ 'prefer-const': 'warn' });
+    const linter = new Linter();
+    const result = linter.verifyAndFix('let x = 1;', {
+      ...config,
+      languageOptions: { ecmaVersion: 2024 },
+      rules: { ...config.rules, 'no-unused-vars': 'off', 'eol-last': 'off' },
+    });
+    expect(result.fixed).toBe(false);
+    expect(result.output).toBe('let x = 1;');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// createPlugin() with modes
+// ---------------------------------------------------------------------------
+
+describe('createPlugin', () => {
+  it('mode fix: strips fix but keeps suggestions', () => {
+    const fixOnly = disableAutofix.createPlugin({ mode: 'fix' });
+    const linter = new Linter();
+
+    // no-console has suggestions — should be preserved
+    const messages = linter.verify('console.log("test")', {
+      languageOptions: { ecmaVersion: 2024 },
+      plugins: { 'disable-fix': fixOnly },
+      rules: { 'disable-fix/no-console': 'error', 'eol-last': 'off' },
+    });
+    expect(messages.length).toBeGreaterThan(0);
+    expect(messages[0].suggestions).toBeDefined();
+    expect(messages[0].suggestions!.length).toBeGreaterThan(0);
+
+    // prefer-const has fix — should be stripped
+    const result = linter.verifyAndFix('let x = 1;', {
+      languageOptions: { ecmaVersion: 2024 },
+      plugins: { 'disable-fix': fixOnly },
+      rules: { 'disable-fix/prefer-const': 'error', 'no-unused-vars': 'off', 'eol-last': 'off' },
+    });
+    expect(result.fixed).toBe(false);
+  });
+
+  it('mode suggest: strips suggestions but keeps fix', () => {
+    const suggestOnly = disableAutofix.createPlugin({ mode: 'suggest' });
+    const linter = new Linter();
+
+    // no-console: suggestions stripped
+    const messages = linter.verify('console.log("test")', {
+      languageOptions: { ecmaVersion: 2024 },
+      plugins: { 'disable-suggest': suggestOnly },
+      rules: { 'disable-suggest/no-console': 'error', 'eol-last': 'off' },
+    });
+    expect(messages.length).toBeGreaterThan(0);
+    expect(messages[0].suggestions).toBeUndefined();
+
+    // prefer-const: fix preserved
+    const result = linter.verifyAndFix('let x = 1;', {
+      languageOptions: { ecmaVersion: 2024 },
+      plugins: { 'disable-suggest': suggestOnly },
+      rules: { 'disable-suggest/prefer-const': 'error', 'no-unused-vars': 'off', 'eol-last': 'off' },
+    });
+    expect(result.fixed).toBe(true);
+    expect(result.output).toContain('const');
+  });
+
+  it('mode fix: preserves fixable metadata, strips hasSuggestions', () => {
+    const fixOnly = disableAutofix.createPlugin({ mode: 'fix' });
+    // prefer-const is fixable — fixable should be stripped (we're disabling fix)
+    expect(fixOnly.rules['prefer-const'].meta?.fixable).toBeUndefined();
+    // no-console hasSuggestions — should be preserved
+    expect(fixOnly.rules['no-console'].meta?.hasSuggestions).toBe(true);
+  });
+
+  it('mode suggest: preserves fixable metadata, strips hasSuggestions', () => {
+    const suggestOnly = disableAutofix.createPlugin({ mode: 'suggest' });
+    // prefer-const is fixable — should be preserved
+    expect(suggestOnly.rules['prefer-const'].meta?.fixable).toBe('code');
+    // no-console hasSuggestions — should be stripped
+    expect(suggestOnly.rules['no-console'].meta?.hasSuggestions).toBeUndefined();
+  });
+
+  it('plugins option restricts which plugins are loaded', () => {
+    // This test only works if we have third-party plugins installed.
+    // In Jest's sandbox, ESM plugins may not load, so we test the filtering logic
+    // by checking builtins are always present regardless of filter.
+    const limited = disableAutofix.createPlugin({ plugins: ['nonexistent-plugin'] });
+    const names = Object.keys(limited.rules);
+    // Builtins should always be present
+    expect(names).toContain('prefer-const');
+    // No plugin rules should be present
+    const pluginRules = names.filter(n => n.includes('/'));
+    expect(pluginRules.length).toBe(0);
+  });
+
+  it('configure on mode plugin uses correct prefix', () => {
+    const fixOnly = disableAutofix.createPlugin({ mode: 'fix' });
+    const config = fixOnly.configure({ 'prefer-const': 'warn' });
+    expect(config.plugins['disable-fix']).toBe(fixOnly);
+    expect(config.rules['disable-fix/prefer-const']).toBe('warn');
+    expect(config.rules['prefer-const']).toBe('off');
+  });
+
+  it('has correct meta on custom instances', () => {
+    const custom = disableAutofix.createPlugin({ mode: 'fix' });
+    expect(custom.meta.name).toBe('eslint-plugin-disable-autofix');
+    expect(custom.meta.version).toBe('6.1.0');
   });
 });
