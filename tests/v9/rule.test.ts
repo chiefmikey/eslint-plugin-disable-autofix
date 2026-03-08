@@ -9,6 +9,10 @@ import type { Rule } from 'eslint';
 // native Node.js verification of ESM plugin loading.
 import disableAutofix from 'eslint-plugin-disable-autofix';
 
+// Read version dynamically so tests don't break on every bump
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { version: PKG_VERSION } = require('../../package.json') as { version: string };
+
 const lint = (text: string, config: Linter.Config): Linter.FixReport => {
   const linter = new Linter();
   return linter.verifyAndFix(text, [config]);
@@ -277,7 +281,7 @@ describe('plugin discovery', () => {
 describe('plugin structure', () => {
   it('has correct meta', () => {
     expect(disableAutofix.meta.name).toBe('eslint-plugin-disable-autofix');
-    expect(disableAutofix.meta.version).toBe('6.1.1');
+    expect(disableAutofix.meta.version).toBe(PKG_VERSION);
   });
 
   it('exports the required flat config plugin properties', () => {
@@ -442,6 +446,6 @@ describe('createPlugin', () => {
   it('has correct meta on custom instances', () => {
     const custom = disableAutofix.createPlugin({ mode: 'fix' });
     expect(custom.meta.name).toBe('eslint-plugin-disable-autofix');
-    expect(custom.meta.version).toBe('6.1.1');
+    expect(custom.meta.version).toBe(PKG_VERSION);
   });
 });
