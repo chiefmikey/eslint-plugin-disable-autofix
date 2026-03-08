@@ -1,0 +1,39 @@
+{
+  "name": "eslint-plugin-disable-autofix",
+  "version": "6.1.0",
+  "description": "Disable autofix for ESLint rules without turning them off",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "LICENSE"
+  ],
+  "peerDependencies": {
+    "eslint": ">=9.0.0"
+  },
+  "license": "MIT",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "disable",
+    "autofix",
+    "suggestions",
+    "flat-config"
+  ],
+  "homepage": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
+  "repository": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
+  "bugs": "https://github.com/chiefmikey/eslint-plugin-disable-autofix/issues",
+  "author": "Mikl Wolfe <wolfe@mikl.io> (https://github.com/chiefmikey)"
+}
