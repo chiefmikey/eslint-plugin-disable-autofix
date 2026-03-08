@@ -13,6 +13,7 @@ const assert = require('node:assert/strict');
 const { test, describe } = require('node:test');
 
 const plugin = require('eslint-plugin-disable-autofix');
+const { version: PKG_VERSION } = require('../package.json');
 
 // ─── Rule Discovery ─────────────────────────────────────────────────────────
 
@@ -64,7 +65,7 @@ describe('rule discovery', () => {
 
 test('plugin meta is correct', () => {
   assert.equal(plugin.meta.name, 'eslint-plugin-disable-autofix');
-  assert.equal(plugin.meta.version, '6.1.1');
+  assert.equal(plugin.meta.version, PKG_VERSION);
 });
 
 // ─── Behavioral Tests ───────────────────────────────────────────────────────
