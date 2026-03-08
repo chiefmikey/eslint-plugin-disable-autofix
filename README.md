@@ -25,9 +25,8 @@ import disableAutofix from 'eslint-plugin-disable-autofix';
 export default [
   disableAutofix.configure({
     'prefer-const': 'warn',
-    'semi': ['error', 'always'],
+    'no-var': 'error',
     '@stylistic/semi': ['error', 'always'],
-    'react/jsx-indent': 'error',
   }),
 ];
 ```

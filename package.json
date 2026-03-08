@@ -3,7 +3,7 @@
   "version": "6.1.0",
   "description": "Disable autofix for ESLint rules without turning them off",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && cp LICENSE dist/LICENSE",
     "test": "npm run build && npm i ./dist && jest --config=jest.config.ts tests/v9 && node --test tests/integration.test.js",
     "test:quick": "jest --config=jest.config.ts tests/v9 && node --test tests/integration.test.js",
     "ci": "npm run build && jest tests/v9 && node --test tests/integration.test.js",

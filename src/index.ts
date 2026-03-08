@@ -111,6 +111,18 @@ const safeRequire = (id: string): PluginExport | undefined => {
   }
 };
 
+// ─── Builtin Rules (public API with filesystem fallback) ────────────────────
+
+let eslintBuiltinRules: Map<string, Rule.RuleModule> | undefined;
+try {
+  const unsupported = require('eslint/use-at-your-own-risk') as {
+    builtinRules?: Map<string, Rule.RuleModule>;
+  };
+  eslintBuiltinRules = unsupported.builtinRules;
+} catch {
+  /* fallback handled in discover() */
+}
+
 // ─── Discovery (runs once, cheap — no require() of plugins) ─────────────────
 
 let discoveryDone = false;
@@ -144,19 +156,23 @@ const discover = (): void => {
     nmDirs.push(path.join(process.cwd(), 'node_modules'));
   }
 
-  // Scan builtin rule filenames (no require — just readdir)
-  for (const nmDir of nmDirs) {
-    try {
-      const rulesDir = path.join(nmDir, 'eslint', 'lib', 'rules');
-      for (const f of fs.readdirSync(rulesDir)) {
-        if (f.endsWith('.js') && !f.includes('index')) {
-          const name = f.replace('.js', '');
-          if (!builtinRuleNames.includes(name)) builtinRuleNames.push(name);
+  // Discover builtin rule names via public API or filesystem fallback
+  if (eslintBuiltinRules) {
+    builtinRuleNames.push(...eslintBuiltinRules.keys());
+  } else {
+    for (const nmDir of nmDirs) {
+      try {
+        const rulesDir = path.join(nmDir, 'eslint', 'lib', 'rules');
+        for (const f of fs.readdirSync(rulesDir)) {
+          if (f.endsWith('.js') && !f.includes('index')) {
+            const name = f.replace('.js', '');
+            if (!builtinRuleNames.includes(name)) builtinRuleNames.push(name);
+          }
         }
+        break;
+      } catch {
+        /* try next */
       }
-      break;
-    } catch {
-      /* try next */
     }
   }
 
@@ -209,6 +225,7 @@ const loadPluginRules = (
 };
 
 const loadBuiltinRule = (name: string): Rule.RuleModule | undefined => {
+  if (eslintBuiltinRules) return eslintBuiltinRules.get(name);
   try {
     const eslintDir = path.dirname(require.resolve('eslint/package.json'));
     return require(path.join(eslintDir, 'lib', 'rules', `${name}.js`)) as Rule.RuleModule;
