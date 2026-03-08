@@ -1,5 +1,7 @@
 node_modules
-dist
 docs
 .vscode
 .DS_Store
+dist/index.js
+dist/index.d.ts
+dist/LICENSE
