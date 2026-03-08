@@ -64,7 +64,7 @@ describe('rule discovery', () => {
 
 test('plugin meta is correct', () => {
   assert.equal(plugin.meta.name, 'eslint-plugin-disable-autofix');
-  assert.equal(plugin.meta.version, '6.1.0');
+  assert.equal(plugin.meta.version, '6.1.1');
 });
 
 // ─── Behavioral Tests ───────────────────────────────────────────────────────
