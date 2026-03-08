@@ -277,7 +277,7 @@ describe('plugin discovery', () => {
 describe('plugin structure', () => {
   it('has correct meta', () => {
     expect(disableAutofix.meta.name).toBe('eslint-plugin-disable-autofix');
-    expect(disableAutofix.meta.version).toBe('6.1.0');
+    expect(disableAutofix.meta.version).toBe('6.1.1');
   });
 
   it('exports the required flat config plugin properties', () => {
@@ -442,6 +442,6 @@ describe('createPlugin', () => {
   it('has correct meta on custom instances', () => {
     const custom = disableAutofix.createPlugin({ mode: 'fix' });
     expect(custom.meta.name).toBe('eslint-plugin-disable-autofix');
-    expect(custom.meta.version).toBe('6.1.0');
+    expect(custom.meta.version).toBe('6.1.1');
   });
 });
