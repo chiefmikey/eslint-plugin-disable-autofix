@@ -1,6 +1,6 @@
 # eslint-plugin-disable-autofix
 
-🎉 **Supports ESLint 10** 🎉
+🎉 **Compatible with ESLint 10** 🎉
 
 Disable autofix for ESLint rules without turning them off.
 
@@ -8,7 +8,7 @@ Disable autofix for ESLint rules without turning them off.
 - Works with any rule from any plugin — builtin, third-party, scoped, ESM
 - Selective modes — strip autofix only, suggestions only, or both
 - Lazy loading — plugins loaded on demand, not at startup
-- Compatible with ESLint 9 and 10 flat config
+- ESLint 9 and 10 flat config
 - Zero dependencies
 
 ## Install
