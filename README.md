@@ -7,7 +7,7 @@ Disable autofix for ESLint rules without turning them off.
 - Rules still report violations but `eslint --fix` and IDE quick-fixes won't change your code
 - Works with any rule from any plugin — builtin, third-party, scoped, ESM
 - Selective modes — disable autofix only, suggestions only, or both
-- Lazy loading — plugins loaded on demand, not at startup
+- Lazy loading — plugins loaded on demand
 - ESLint 9 and 10 flat config
 - Zero dependencies
 
