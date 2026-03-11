@@ -1,6 +1,6 @@
 # eslint-plugin-disable-autofix
 
-🔧 **Supports ESLint 10** 🔧
+🎉🎊 **Now with full ESLint 10 support!** 🎊🎉
 
 Disable autofix for ESLint rules without turning them off.
 
