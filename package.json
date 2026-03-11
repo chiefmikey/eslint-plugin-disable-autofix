@@ -1,9 +1,9 @@
 {
   "name": "eslint-plugin-disable-autofix",
-  "version": "6.1.1",
+  "version": "6.1.2",
   "description": "Disable autofix for ESLint rules without turning them off",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && cp LICENSE dist/LICENSE",
+    "build": "tsc -p tsconfig.build.json && cp LICENSE dist/LICENSE && cp README.md dist/README.md",
     "test": "npm run build && npm i ./dist && jest --config=jest.config.ts tests/v9 && node --test tests/integration.test.js",
     "test:quick": "jest --config=jest.config.ts tests/v9 && node --test tests/integration.test.js",
     "ci": "npm run build && jest tests/v9 && node --test tests/integration.test.js",

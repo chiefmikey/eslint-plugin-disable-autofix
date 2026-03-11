@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-disable-autofix",
-  "version": "6.1.1",
+  "version": "6.1.2",
   "description": "Disable autofix for ESLint rules without turning them off",
   "main": "./index.js",
   "types": "./index.d.ts",
@@ -17,7 +17,8 @@
   "files": [
     "index.js",
     "index.d.ts",
-    "LICENSE"
+    "LICENSE",
+    "README.md"
   ],
   "peerDependencies": {
     "eslint": ">=9.0.0"

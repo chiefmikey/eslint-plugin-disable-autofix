@@ -35,7 +35,7 @@ interface PluginInstance {
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 
-const VERSION = '6.1.1';
+const VERSION = '6.1.2';
 
 const MODES: Record<string, DisableMode> = {
   all: { fix: true, suggest: true },
