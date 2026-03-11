@@ -6,7 +6,7 @@ Disable autofix for ESLint rules without turning them off.
 
 - Rules still report violations but `eslint --fix` and IDE quick-fixes won't change your code
 - Works with any rule from any plugin — builtin, third-party, scoped, ESM
-- Selective modes — strip autofix only, suggestions only, or both
+- Selective modes — disable autofix only, suggestions only, or both
 - Lazy loading — plugins loaded on demand, not at startup
 - ESLint 9 and 10 flat config
 - Zero dependencies
@@ -54,15 +54,15 @@ export default [
 
 ### Selective modes
 
-By default, both autofix and suggestions are stripped. Use `createPlugin()` to strip one or the other:
+By default, both autofix and suggestions are disabled. Use `createPlugin()` to disable one or the other:
 
 ```js
 import disableAutofix from 'eslint-plugin-disable-autofix';
 
-// Strip autofix only — keep IDE suggestions
+// Disable autofix only — keep IDE suggestions
 const disableFix = disableAutofix.createPlugin({ mode: 'fix' });
 
-// Strip suggestions only — keep autofix
+// Disable suggestions only — keep autofix
 const disableSuggest = disableAutofix.createPlugin({ mode: 'suggest' });
 
 export default [
