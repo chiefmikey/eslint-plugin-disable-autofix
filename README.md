@@ -8,6 +8,8 @@ Disable autofix for ESLint rules without turning them off.
 - Works with any rule from any plugin — builtin, third-party, scoped, ESM
 - Selective modes — disable autofix only, suggestions only, or both
 - Lazy loading — plugins loaded on demand
+- `configure()` helper — one-liner setup, no manual rule toggling
+- Monorepo support — pnpm, Nx, Yarn workspaces, Turborepo
 - ESLint 9 and 10 flat config
 - Zero dependencies
 
