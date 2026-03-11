@@ -1,10 +1,10 @@
 # eslint-plugin-disable-autofix
 
+🔧 **Supports ESLint 10** 🔧
+
 Disable autofix for ESLint rules without turning them off.
 
-Wraps any rule to strip `fix` and `suggest` from `context.report()`, preventing `--fix` and IDE quick-fix suggestions from modifying code. The original violation is still reported.
-
-Works with ESLint 9 and 10 flat config. Supports builtin rules, third-party plugins, scoped plugins, and ESM-only plugins. Auto-discovers all installed plugins. Zero dependencies.
+Rules still report violations but `eslint --fix` and IDE quick-fixes won't change your code. Works with any rule from any plugin. ESLint 9 and 10 flat config. Zero dependencies.
 
 ## Install
 
@@ -73,10 +73,6 @@ const limited = disableAutofix.createPlugin({ plugins: ['react', 'unicorn'] });
 ```
 
 Only wraps rules from the listed plugin prefixes. Builtin ESLint rules are always included.
-
-## How it works
-
-The plugin scans `node_modules` for ESLint and all installed ESLint plugins. Rules are loaded lazily — only when accessed. For each rule, it creates a wrapped version that intercepts `context.report()` and deletes the `fix` and `suggest` properties before forwarding. It also removes `fixable` and `hasSuggestions` from rule metadata so ESLint and IDEs don't advertise fixes.
 
 ## License
 
