@@ -2,6 +2,7 @@ node_modules
 docs
 .vscode
 .DS_Store
+CLAUDE.md
 dist/index.js
 dist/index.d.ts
 dist/LICENSE
