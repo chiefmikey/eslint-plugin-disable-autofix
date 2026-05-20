@@ -18,13 +18,6 @@
     "outDir": "./dist",
     "types": ["jest"]
   },
-  "include": [
-    "src/**/*.ts",
-    "tests/**/*.ts",
-    "jest.config.*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["src/**/*.ts", "tests/**/*.ts", "jest.config.*"],
+  "exclude": ["node_modules", "dist"]
 }

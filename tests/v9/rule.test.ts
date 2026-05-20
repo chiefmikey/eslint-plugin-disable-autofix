@@ -1,7 +1,6 @@
+// eslint-disable-next-line import-x/no-extraneous-dependencies
 import { describe, expect, it } from '@jest/globals';
-import { Linter } from 'eslint';
-import type { Rule } from 'eslint';
-
+import { Linter, type Rule } from 'eslint';
 // The plugin loads rules from node_modules at require time.
 // Note: Jest's runtime doesn't support require(esm) like native Node.js,
 // so ESM-only plugins (unicorn, @stylistic) may not load in tests.
@@ -10,8 +9,21 @@ import type { Rule } from 'eslint';
 import disableAutofix from 'eslint-plugin-disable-autofix';
 
 // Read version dynamically so tests don't break on every bump
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { version: PKG_VERSION } = require('../../package.json') as { version: string };
+/* eslint-disable
+  @typescript-eslint/no-require-imports,
+  @typescript-eslint/no-unsafe-type-assertion,
+  unicorn/prefer-module
+  --
+  package.json is CJS-only; require() is the only way to load it in a Jest+ts-jest context.
+*/
+const { version: PKG_VERSION } = require('../../package.json') as {
+  version: string;
+};
+/* eslint-enable
+  @typescript-eslint/no-require-imports,
+  @typescript-eslint/no-unsafe-type-assertion,
+  unicorn/prefer-module
+*/
 
 const lint = (text: string, config: Linter.Config): Linter.FixReport => {
   const linter = new Linter();
@@ -32,15 +44,16 @@ const baseConfig = {
 // ---------------------------------------------------------------------------
 
 describe('autofix sanity check', () => {
-  it('ESLint fixes prefer-const (builtin rule)', () => {
+  it('eSLint fixes prefer-const (builtin rule)', () => {
     const result = lint('let x = 1;', {
       ...baseConfig,
       rules: {
-        'prefer-const': 'warn',
-        'no-unused-vars': 'off',
         'eol-last': 'off',
+        'no-unused-vars': 'off',
+        'prefer-const': 'warn',
       },
     });
+
     expect(result.fixed).toBe(true);
     expect(result.output).toBe('const x = 1;');
   });
@@ -57,12 +70,13 @@ describe('disable autofix — builtin rules', () => {
       ...baseConfig,
       plugins: { 'disable-autofix': disableAutofix },
       rules: {
-        'prefer-const': 'off',
         'disable-autofix/prefer-const': 'warn',
-        'no-unused-vars': 'off',
         'eol-last': 'off',
+        'no-unused-vars': 'off',
+        'prefer-const': 'off',
       },
     });
+
     expect(result.fixed).toBe(false);
     expect(result.output).toBe(input);
   });
@@ -73,10 +87,11 @@ describe('disable autofix — builtin rules', () => {
       plugins: { 'disable-autofix': disableAutofix },
       rules: {
         'disable-autofix/prefer-const': 'warn',
-        'no-unused-vars': 'off',
         'eol-last': 'off',
+        'no-unused-vars': 'off',
       },
     });
+
     expect(messages.length).toBeGreaterThan(0);
     expect(messages[0].ruleId).toBe('disable-autofix/prefer-const');
   });
@@ -87,11 +102,12 @@ describe('disable autofix — builtin rules', () => {
       ...baseConfig,
       plugins: { 'disable-autofix': disableAutofix },
       rules: {
-        'semi': 'off',
         'disable-autofix/semi': ['warn', 'always'],
         'eol-last': 'off',
+        semi: 'off',
       },
     });
+
     expect(result.fixed).toBe(false);
     expect(result.output).toBe(input);
   });
@@ -102,11 +118,12 @@ describe('disable autofix — builtin rules', () => {
       ...baseConfig,
       plugins: { 'disable-autofix': disableAutofix },
       rules: {
-        'no-extra-semi': 'off',
         'disable-autofix/no-extra-semi': 'warn',
         'eol-last': 'off',
+        'no-extra-semi': 'off',
       },
     });
+
     expect(result.fixed).toBe(false);
     expect(result.output).toBe(input);
   });
@@ -120,10 +137,12 @@ describe('disable suggestions', () => {
   it('original rule reports suggestions', () => {
     const messages = verify('console.log("test")', {
       ...baseConfig,
-      rules: { 'no-console': 'warn', 'eol-last': 'off' },
+      rules: { 'eol-last': 'off', 'no-console': 'warn' },
     });
+
     expect(messages.length).toBeGreaterThan(0);
     expect(messages[0].suggestions).toBeDefined();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- asserted defined above
     expect(messages[0].suggestions!.length).toBeGreaterThan(0);
   });
 
@@ -132,11 +151,12 @@ describe('disable suggestions', () => {
       ...baseConfig,
       plugins: { 'disable-autofix': disableAutofix },
       rules: {
-        'no-console': 'off',
         'disable-autofix/no-console': 'warn',
         'eol-last': 'off',
+        'no-console': 'off',
       },
     });
+
     expect(messages.length).toBeGreaterThan(0);
     expect(messages[0].ruleId).toBe('disable-autofix/no-console');
     expect(messages[0].suggestions).toBeUndefined();
@@ -145,12 +165,36 @@ describe('disable suggestions', () => {
   it('rule with both fix+suggestions has correct metadata', () => {
     // no-implicit-coercion has fixable: 'code' AND hasSuggestions: true
     // Verify the original has both properties
-    const path = require('path');
-    const eslintPkg = require.resolve('eslint/package.json');
-    const rulesDir = path.join(path.dirname(eslintPkg), 'lib', 'rules');
+    /* eslint-disable
+      @typescript-eslint/no-require-imports,
+      @typescript-eslint/no-unsafe-assignment,
+      @typescript-eslint/no-unsafe-call,
+      @typescript-eslint/no-unsafe-member-access,
+      @typescript-eslint/no-unsafe-argument,
+      import-x/no-dynamic-require,
+      unicorn/prefer-module,
+      unicorn/prevent-abbreviations
+      --
+      Loading ESLint rule files via dynamic require() is intentional: these tests verify
+      the original rule is not mutated. There is no static-import equivalent for this pattern.
+    */
+    const path = require('node:path');
+    const eslintPackage = require.resolve('eslint/package.json');
+    const rulesDir = path.join(path.dirname(eslintPackage), 'lib', 'rules');
     const original = require(path.join(rulesDir, 'no-implicit-coercion.js'));
+
     expect(original.meta.fixable).toBe('code');
     expect(original.meta.hasSuggestions).toBe(true);
+    /* eslint-enable
+      @typescript-eslint/no-require-imports,
+      @typescript-eslint/no-unsafe-assignment,
+      @typescript-eslint/no-unsafe-call,
+      @typescript-eslint/no-unsafe-member-access,
+      @typescript-eslint/no-unsafe-argument,
+      import-x/no-dynamic-require,
+      unicorn/prefer-module,
+      unicorn/prevent-abbreviations
+    */
   });
 
   it('disabled rule with fix+suggestions strips both', () => {
@@ -159,12 +203,13 @@ describe('disable suggestions', () => {
       ...baseConfig,
       plugins: { 'disable-autofix': disableAutofix },
       rules: {
-        'no-implicit-coercion': 'off',
         'disable-autofix/no-implicit-coercion': ['warn', { string: true }],
-        'no-undef': 'off',
         'eol-last': 'off',
+        'no-implicit-coercion': 'off',
+        'no-undef': 'off',
       },
     });
+
     expect(fixResult.fixed).toBe(false);
     expect(fixResult.output).toBe(input);
 
@@ -172,12 +217,13 @@ describe('disable suggestions', () => {
       ...baseConfig,
       plugins: { 'disable-autofix': disableAutofix },
       rules: {
-        'no-implicit-coercion': 'off',
         'disable-autofix/no-implicit-coercion': ['warn', { string: true }],
-        'no-undef': 'off',
         'eol-last': 'off',
+        'no-implicit-coercion': 'off',
+        'no-undef': 'off',
       },
     });
+
     expect(messages.length).toBeGreaterThan(0);
     expect(messages[0].suggestions).toBeUndefined();
   });
@@ -190,10 +236,8 @@ describe('disable suggestions', () => {
 describe('metadata stripping', () => {
   it('removes fixable from fixable rules', () => {
     expect(disableAutofix.rules['prefer-const'].meta?.fixable).toBeUndefined();
-    expect(disableAutofix.rules['semi'].meta?.fixable).toBeUndefined();
-    expect(
-      disableAutofix.rules['no-extra-semi'].meta?.fixable,
-    ).toBeUndefined();
+    expect(disableAutofix.rules.semi.meta?.fixable).toBeUndefined();
+    expect(disableAutofix.rules['no-extra-semi'].meta?.fixable).toBeUndefined();
   });
 
   it('removes hasSuggestions from rules with suggestions', () => {
@@ -209,28 +253,79 @@ describe('metadata stripping', () => {
   });
 
   it('preserves type, docs, messages, and schema', () => {
-    const meta = disableAutofix.rules['prefer-const'].meta;
+    const { meta } = disableAutofix.rules['prefer-const'];
+
     expect(meta).toBeDefined();
+    /* eslint-disable @typescript-eslint/no-non-null-assertion -- asserted defined above */
     expect(meta!.type).toBeDefined();
     expect(meta!.docs).toBeDefined();
     expect(meta!.messages).toBeDefined();
     expect(meta!.schema).toBeDefined();
+    /* eslint-enable @typescript-eslint/no-non-null-assertion */
   });
 
   it('does not mutate original ESLint rules', () => {
-    const path = require('path');
-    const eslintPkg = require.resolve('eslint/package.json');
-    const rulesDir = path.join(path.dirname(eslintPkg), 'lib', 'rules');
+    /* eslint-disable
+      @typescript-eslint/no-require-imports,
+      @typescript-eslint/no-unsafe-assignment,
+      @typescript-eslint/no-unsafe-call,
+      @typescript-eslint/no-unsafe-member-access,
+      @typescript-eslint/no-unsafe-argument,
+      import-x/no-dynamic-require,
+      unicorn/prefer-module,
+      unicorn/prevent-abbreviations
+      --
+      Loading ESLint rule files via dynamic require() is intentional: these tests verify
+      the original rule is not mutated. There is no static-import equivalent for this pattern.
+    */
+    const path = require('node:path');
+    const eslintPackage = require.resolve('eslint/package.json');
+    const rulesDir = path.join(path.dirname(eslintPackage), 'lib', 'rules');
     const original = require(path.join(rulesDir, 'prefer-const.js'));
+
     expect(original.meta.fixable).toBe('code');
+    /* eslint-enable
+      @typescript-eslint/no-require-imports,
+      @typescript-eslint/no-unsafe-assignment,
+      @typescript-eslint/no-unsafe-call,
+      @typescript-eslint/no-unsafe-member-access,
+      @typescript-eslint/no-unsafe-argument,
+      import-x/no-dynamic-require,
+      unicorn/prefer-module,
+      unicorn/prevent-abbreviations
+    */
   });
 
   it('does not mutate original rules with suggestions', () => {
-    const path = require('path');
-    const eslintPkg = require.resolve('eslint/package.json');
-    const rulesDir = path.join(path.dirname(eslintPkg), 'lib', 'rules');
+    /* eslint-disable
+      @typescript-eslint/no-require-imports,
+      @typescript-eslint/no-unsafe-assignment,
+      @typescript-eslint/no-unsafe-call,
+      @typescript-eslint/no-unsafe-member-access,
+      @typescript-eslint/no-unsafe-argument,
+      import-x/no-dynamic-require,
+      unicorn/prefer-module,
+      unicorn/prevent-abbreviations
+      --
+      Loading ESLint rule files via dynamic require() is intentional: these tests verify
+      the original rule is not mutated. There is no static-import equivalent for this pattern.
+    */
+    const path = require('node:path');
+    const eslintPackage = require.resolve('eslint/package.json');
+    const rulesDir = path.join(path.dirname(eslintPackage), 'lib', 'rules');
     const original = require(path.join(rulesDir, 'no-console.js'));
+
     expect(original.meta.hasSuggestions).toBe(true);
+    /* eslint-enable
+      @typescript-eslint/no-require-imports,
+      @typescript-eslint/no-unsafe-assignment,
+      @typescript-eslint/no-unsafe-call,
+      @typescript-eslint/no-unsafe-member-access,
+      @typescript-eslint/no-unsafe-argument,
+      import-x/no-dynamic-require,
+      unicorn/prefer-module,
+      unicorn/prevent-abbreviations
+    */
   });
 });
 
@@ -243,6 +338,7 @@ describe('plugin discovery', () => {
     const builtinCount = Object.keys(disableAutofix.rules).filter(
       (r) => !r.includes('/'),
     ).length;
+
     // ESLint 10 has ~291 rules
     expect(builtinCount).toBeGreaterThan(250);
   });
@@ -269,6 +365,7 @@ describe('plugin discovery', () => {
     const hasEslint = rules.some(
       (r) => r.startsWith('@eslint/') && !r.startsWith('@eslint-community/'),
     );
+
     expect(hasTypes).toBe(false);
     expect(hasEslint).toBe(false);
   });
@@ -299,6 +396,13 @@ describe('plugin structure', () => {
   });
 
   it('none of the rules have fixable or hasSuggestions meta', () => {
+    /* eslint-disable
+      @typescript-eslint/no-unnecessary-type-assertion,
+      @typescript-eslint/strict-boolean-expressions
+      --
+      The proxy rules object needs the type cast to iterate correctly.
+      The if (rule.meta) check is intentional — not all rules have meta.
+    */
     for (const [, rule] of Object.entries(
       disableAutofix.rules as Record<string, Rule.RuleModule>,
     )) {
@@ -307,6 +411,10 @@ describe('plugin structure', () => {
         expect(rule.meta.hasSuggestions).toBeUndefined();
       }
     }
+    /* eslint-enable
+      @typescript-eslint/no-unnecessary-type-assertion,
+      @typescript-eslint/strict-boolean-expressions
+    */
   });
 });
 
@@ -317,6 +425,7 @@ describe('plugin structure', () => {
 describe('configure helper', () => {
   it('returns flat config with plugins and rules', () => {
     const config = disableAutofix.configure({ 'prefer-const': 'warn' });
+
     expect(config.plugins).toBeDefined();
     expect(config.plugins['disable-autofix']).toBe(disableAutofix);
     expect(config.rules['prefer-const']).toBe('off');
@@ -326,10 +435,11 @@ describe('configure helper', () => {
   it('handles multiple rules with options', () => {
     const config = disableAutofix.configure({
       'prefer-const': 'warn',
-      'semi': ['error', 'always'],
+      semi: ['error', 'always'],
     });
+
     expect(config.rules['prefer-const']).toBe('off');
-    expect(config.rules['semi']).toBe('off');
+    expect(config.rules.semi).toBe('off');
     expect(config.rules['disable-autofix/prefer-const']).toBe('warn');
     expect(config.rules['disable-autofix/semi']).toEqual(['error', 'always']);
   });
@@ -338,6 +448,7 @@ describe('configure helper', () => {
     const config = disableAutofix.configure({
       'react/jsx-indent': 'error',
     });
+
     expect(config.rules['react/jsx-indent']).toBe('off');
     expect(config.rules['disable-autofix/react/jsx-indent']).toBe('error');
   });
@@ -348,8 +459,9 @@ describe('configure helper', () => {
     const result = linter.verifyAndFix('let x = 1;', {
       ...config,
       languageOptions: { ecmaVersion: 2024 },
-      rules: { ...config.rules, 'no-unused-vars': 'off', 'eol-last': 'off' },
+      rules: { ...config.rules, 'eol-last': 'off', 'no-unused-vars': 'off' },
     });
+
     expect(result.fixed).toBe(false);
     expect(result.output).toBe('let x = 1;');
   });
@@ -370,16 +482,23 @@ describe('createPlugin', () => {
       plugins: { 'disable-fix': fixOnly },
       rules: { 'disable-fix/no-console': 'error', 'eol-last': 'off' },
     });
+
     expect(messages.length).toBeGreaterThan(0);
     expect(messages[0].suggestions).toBeDefined();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- asserted defined above
     expect(messages[0].suggestions!.length).toBeGreaterThan(0);
 
     // prefer-const has fix — should be stripped
     const result = linter.verifyAndFix('let x = 1;', {
       languageOptions: { ecmaVersion: 2024 },
       plugins: { 'disable-fix': fixOnly },
-      rules: { 'disable-fix/prefer-const': 'error', 'no-unused-vars': 'off', 'eol-last': 'off' },
+      rules: {
+        'disable-fix/prefer-const': 'error',
+        'eol-last': 'off',
+        'no-unused-vars': 'off',
+      },
     });
+
     expect(result.fixed).toBe(false);
   });
 
@@ -393,6 +512,7 @@ describe('createPlugin', () => {
       plugins: { 'disable-suggest': suggestOnly },
       rules: { 'disable-suggest/no-console': 'error', 'eol-last': 'off' },
     });
+
     expect(messages.length).toBeGreaterThan(0);
     expect(messages[0].suggestions).toBeUndefined();
 
@@ -400,14 +520,20 @@ describe('createPlugin', () => {
     const result = linter.verifyAndFix('let x = 1;', {
       languageOptions: { ecmaVersion: 2024 },
       plugins: { 'disable-suggest': suggestOnly },
-      rules: { 'disable-suggest/prefer-const': 'error', 'no-unused-vars': 'off', 'eol-last': 'off' },
+      rules: {
+        'disable-suggest/prefer-const': 'error',
+        'eol-last': 'off',
+        'no-unused-vars': 'off',
+      },
     });
+
     expect(result.fixed).toBe(true);
     expect(result.output).toContain('const');
   });
 
   it('mode fix: preserves fixable metadata, strips hasSuggestions', () => {
     const fixOnly = disableAutofix.createPlugin({ mode: 'fix' });
+
     // prefer-const is fixable — fixable should be stripped (we're disabling fix)
     expect(fixOnly.rules['prefer-const'].meta?.fixable).toBeUndefined();
     // no-console hasSuggestions — should be preserved
@@ -416,28 +542,37 @@ describe('createPlugin', () => {
 
   it('mode suggest: preserves fixable metadata, strips hasSuggestions', () => {
     const suggestOnly = disableAutofix.createPlugin({ mode: 'suggest' });
+
     // prefer-const is fixable — should be preserved
     expect(suggestOnly.rules['prefer-const'].meta?.fixable).toBe('code');
     // no-console hasSuggestions — should be stripped
-    expect(suggestOnly.rules['no-console'].meta?.hasSuggestions).toBeUndefined();
+    expect(
+      suggestOnly.rules['no-console'].meta?.hasSuggestions,
+    ).toBeUndefined();
   });
 
   it('plugins option restricts which plugins are loaded', () => {
     // This test only works if we have third-party plugins installed.
     // In Jest's sandbox, ESM plugins may not load, so we test the filtering logic
     // by checking builtins are always present regardless of filter.
-    const limited = disableAutofix.createPlugin({ plugins: ['nonexistent-plugin'] });
+    const limited = disableAutofix.createPlugin({
+      plugins: ['nonexistent-plugin'],
+    });
     const names = Object.keys(limited.rules);
+
     // Builtins should always be present
     expect(names).toContain('prefer-const');
+
     // No plugin rules should be present
-    const pluginRules = names.filter(n => n.includes('/'));
-    expect(pluginRules.length).toBe(0);
+    const pluginRules = names.filter((n) => n.includes('/'));
+
+    expect(pluginRules).toHaveLength(0);
   });
 
   it('configure on mode plugin uses correct prefix', () => {
     const fixOnly = disableAutofix.createPlugin({ mode: 'fix' });
     const config = fixOnly.configure({ 'prefer-const': 'warn' });
+
     expect(config.plugins['disable-fix']).toBe(fixOnly);
     expect(config.rules['disable-fix/prefer-const']).toBe('warn');
     expect(config.rules['prefer-const']).toBe('off');
@@ -445,7 +580,10 @@ describe('createPlugin', () => {
 
   it('has correct meta on custom instances', () => {
     const custom = disableAutofix.createPlugin({ mode: 'fix' });
+
     expect(custom.meta.name).toBe('eslint-plugin-disable-autofix');
     expect(custom.meta.version).toBe(PKG_VERSION);
   });
 });
+// verify
+// verify

@@ -10,9 +10,10 @@
  */
 
 const assert = require('node:assert/strict');
-const { test, describe } = require('node:test');
+const { describe, test } = require('node:test');
 
 const plugin = require('eslint-plugin-disable-autofix');
+
 const { version: PKG_VERSION } = require('../package.json');
 
 // ─── Rule Discovery ─────────────────────────────────────────────────────────
@@ -55,7 +56,11 @@ describe('rule discovery', () => {
     for (const [name, rule] of unicornRules) {
       if (rule.meta) {
         assert.equal(rule.meta.fixable, undefined, `${name} has fixable`);
-        assert.equal(rule.meta.hasSuggestions, undefined, `${name} has hasSuggestions`);
+        assert.equal(
+          rule.meta.hasSuggestions,
+          undefined,
+          `${name} has hasSuggestions`,
+        );
       }
     }
   });
@@ -142,7 +147,7 @@ describe('configure', () => {
       {
         languageOptions: { ecmaVersion: 2024 },
         ...config,
-        rules: { ...config.rules, 'no-unused-vars': 'off', 'eol-last': 'off' },
+        rules: { ...config.rules, 'eol-last': 'off', 'no-unused-vars': 'off' },
       },
     ]);
     assert.equal(result.fixed, false);
@@ -180,7 +185,11 @@ describe('createPlugin modes', () => {
       {
         languageOptions: { ecmaVersion: 2024 },
         plugins: { 'disable-fix': fixOnly },
-        rules: { 'disable-fix/prefer-const': 'error', 'no-unused-vars': 'off', 'eol-last': 'off' },
+        rules: {
+          'disable-fix/prefer-const': 'error',
+          'eol-last': 'off',
+          'no-unused-vars': 'off',
+        },
       },
     ]);
     assert.equal(result.fixed, false);
@@ -193,8 +202,10 @@ describe('createPlugin modes', () => {
         rules: { 'disable-fix/no-console': 'error', 'eol-last': 'off' },
       },
     ]);
-    assert.ok(messages[0].suggestions && messages[0].suggestions.length > 0,
-      'suggestions should be preserved in fix mode');
+    assert.ok(
+      messages[0].suggestions && messages[0].suggestions.length > 0,
+      'suggestions should be preserved in fix mode',
+    );
   });
 
   test('mode suggest: keeps fix, strips suggestions', () => {
@@ -207,7 +218,11 @@ describe('createPlugin modes', () => {
       {
         languageOptions: { ecmaVersion: 2024 },
         plugins: { 'disable-suggest': suggestOnly },
-        rules: { 'disable-suggest/prefer-const': 'error', 'no-unused-vars': 'off', 'eol-last': 'off' },
+        rules: {
+          'disable-suggest/prefer-const': 'error',
+          'eol-last': 'off',
+          'no-unused-vars': 'off',
+        },
       },
     ]);
     assert.equal(result.fixed, true);
@@ -221,17 +236,19 @@ describe('createPlugin modes', () => {
         rules: { 'disable-suggest/no-console': 'error', 'eol-last': 'off' },
       },
     ]);
-    assert.ok(!messages[0].suggestions || messages[0].suggestions.length === 0,
-      'suggestions should be stripped in suggest mode');
+    assert.ok(
+      !messages[0].suggestions || messages[0].suggestions.length === 0,
+      'suggestions should be stripped in suggest mode',
+    );
   });
 
   test('plugins option filters rules', () => {
     const limited = plugin.createPlugin({ plugins: ['unicorn'] });
     const names = Object.keys(limited.rules);
 
-    const unicornRules = names.filter(n => n.startsWith('unicorn/'));
-    const stylisticRules = names.filter(n => n.startsWith('@stylistic/'));
-    const builtinRules = names.filter(n => !n.includes('/'));
+    const unicornRules = names.filter((n) => n.startsWith('unicorn/'));
+    const stylisticRules = names.filter((n) => n.startsWith('@stylistic/'));
+    const builtinRules = names.filter((n) => !n.includes('/'));
 
     assert.ok(unicornRules.length > 50, 'should have unicorn rules');
     assert.equal(stylisticRules.length, 0, 'should not have @stylistic rules');

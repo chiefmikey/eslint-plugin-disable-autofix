@@ -7,18 +7,24 @@
     "test": "npm run build && npm i ./dist && jest --config=jest.config.ts tests/v9 && node --test tests/integration.test.js",
     "test:quick": "jest --config=jest.config.ts tests/v9 && node --test tests/integration.test.js",
     "ci": "npm run build && jest tests/v9 && node --test tests/integration.test.js",
-    "publish": "cd dist && npm publish --access public"
+    "publish": "cd dist && npm publish --access public",
+    "prepare": "husky"
   },
   "dependencies": {
-    "eslint": "^10.0.2",
     "eslint-plugin-disable-autofix": "file:dist"
   },
   "devDependencies": {
+    "@mikey-pro/prettier-config": "^10.3.3",
     "@stylistic/eslint-plugin": "^5.9.0",
     "@types/eslint": "^9.6.1",
     "@types/jest": "^30.0.0",
+    "eslint": "^10.4.0",
     "eslint-plugin-unicorn": "^63.0.0",
+    "husky": "^9.1.7",
     "jest": "^30.2.0",
+    "lint-staged": "^17.0.5",
+    "mikey-pro": "^10.3.3",
+    "prettier": "^3.8.3",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
@@ -36,5 +42,13 @@
     "suggestions",
     "flat-config"
   ],
-  "author": "Mikl Wolfe <wolfe@mikl.io> (https://github.com/chiefmikey)"
+  "author": "Mikl Wolfe <wolfe@mikl.io> (https://github.com/chiefmikey)",
+  "lint-staged": {
+    "{src,tests}/**/*.{js,ts,mjs,cjs}": [
+      "eslint --fix --cache --no-error-on-unmatched-pattern",
+      "prettier --write"
+    ],
+    "*.{js,ts,mjs,cjs}": ["prettier --write"],
+    "*.{json,md,yaml,yml}": ["prettier --write"]
+  }
 }

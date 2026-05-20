@@ -7,3 +7,5 @@ dist/index.js
 dist/index.d.ts
 dist/LICENSE
 dist/README.md
+.eslintcache
+.stylelintcache
