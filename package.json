@@ -8,6 +8,7 @@
     "test:quick": "jest --config=jest.config.ts tests/v9 && node --test tests/integration.test.js",
     "ci": "npm run build && jest tests/v9 && node --test tests/integration.test.js",
     "publish": "cd dist && npm publish --access public",
+    "version:bump": "node scripts/bump-version.mjs",
     "prepare": "husky"
   },
   "dependencies": {
@@ -15,19 +16,33 @@
   },
   "devDependencies": {
     "@mikey-pro/prettier-config": "^10.3.3",
-    "@stylistic/eslint-plugin": "^5.9.0",
+    "@stylistic/eslint-plugin": "^5.10.0",
     "@types/eslint": "^9.6.1",
     "@types/jest": "^30.0.0",
-    "eslint": "^10.4.0",
-    "eslint-plugin-unicorn": "^63.0.0",
+    "eslint": "^10.5.0",
+    "eslint-plugin-unicorn": "^66.0.0",
     "husky": "^9.1.7",
-    "jest": "^30.2.0",
-    "lint-staged": "^17.0.5",
+    "jest": "^30.4.2",
+    "lint-staged": "^17.0.7",
     "mikey-pro": "^10.3.3",
-    "prettier": "^3.8.3",
-    "ts-jest": "^29.4.6",
+    "prettier": "^3.8.4",
+    "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
+  },
+  "overrides": {
+    "minimatch@^3": {
+      "brace-expansion": "^1.1.13"
+    },
+    "minimatch@^9": {
+      "brace-expansion": "^2.0.3"
+    },
+    "minimatch@^10": {
+      "brace-expansion": "^5.0.6"
+    },
+    "diff": "^4.0.4",
+    "picomatch@^2": "^2.3.2",
+    "picomatch@^4": "^4.0.4"
   },
   "homepage": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
   "repository": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
