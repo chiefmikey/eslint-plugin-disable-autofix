@@ -471,6 +471,7 @@ describe('configure helper', () => {
 // createPlugin() with modes
 // ---------------------------------------------------------------------------
 
+// eslint-disable-next-line max-lines-per-function -- test suite intentionally covers all modes; splitting would obscure coverage
 describe('createPlugin', () => {
   it('mode fix: strips fix but keeps suggestions', () => {
     const fixOnly = disableAutofix.createPlugin({ mode: 'fix' });
@@ -583,6 +584,59 @@ describe('createPlugin', () => {
 
     expect(custom.meta.name).toBe('eslint-plugin-disable-autofix');
     expect(custom.meta.version).toBe(PKG_VERSION);
+  });
+
+  it('mode all: strips both fix and suggestions', () => {
+    const stripAll = disableAutofix.createPlugin({ mode: 'all' });
+
+    // prefer-const fix should be stripped
+    const fixResult = lint('let x = 1;', {
+      ...baseConfig,
+      plugins: { 'disable-autofix': stripAll },
+      rules: {
+        'disable-autofix/prefer-const': 'error',
+        'eol-last': 'off',
+        'no-unused-vars': 'off',
+      },
+    });
+
+    expect(fixResult.fixed).toBe(false);
+
+    // no-console suggestions should be stripped
+    const messages = verify('console.log("test")', {
+      ...baseConfig,
+      plugins: { 'disable-autofix': stripAll },
+      rules: { 'disable-autofix/no-console': 'error', 'eol-last': 'off' },
+    });
+
+    expect(messages.length).toBeGreaterThan(0);
+    expect(messages[0].suggestions).toBeUndefined();
+  });
+
+  it('mode all: strips both fixable and hasSuggestions metadata', () => {
+    const stripAll = disableAutofix.createPlugin({ mode: 'all' });
+
+    expect(stripAll.rules['prefer-const'].meta?.fixable).toBeUndefined();
+    expect(stripAll.rules['no-console'].meta?.hasSuggestions).toBeUndefined();
+  });
+
+  it('configure on mode suggest uses disable-suggest prefix', () => {
+    const suggestOnly = disableAutofix.createPlugin({ mode: 'suggest' });
+    const config = suggestOnly.configure({ 'prefer-const': 'warn' });
+
+    expect(config.plugins['disable-suggest']).toBe(suggestOnly);
+    expect(config.rules['disable-suggest/prefer-const']).toBe('warn');
+    expect(config.rules['prefer-const']).toBe('off');
+  });
+
+  it('unknown mode falls back to disable-autofix prefix', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- intentional bogus mode to test fallback behavior
+    const fallback = disableAutofix.createPlugin({ mode: 'bogus' as 'all' });
+    const config = fallback.configure({ 'prefer-const': 'warn' });
+
+    expect(config.rules['disable-autofix/prefer-const']).toBe('warn');
+    expect(fallback.rules['prefer-const'].meta?.fixable).toBeUndefined();
+    expect(fallback.rules['no-console'].meta?.hasSuggestions).toBeUndefined();
   });
 });
 // verify

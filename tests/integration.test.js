@@ -174,6 +174,7 @@ describe('configure', () => {
 
 // ─── createPlugin() with modes ──────────────────────────────────────────────
 
+// eslint-disable-next-line max-lines-per-function -- test suite intentionally covers all modes; splitting would obscure coverage
 describe('createPlugin modes', () => {
   test('mode fix: strips fix, keeps suggestions', () => {
     const { Linter } = require('eslint');
@@ -262,5 +263,38 @@ describe('createPlugin modes', () => {
     assert.ok(config.plugins['disable-fix']);
     assert.equal(config.rules['prefer-const'], 'off');
     assert.equal(config.rules['disable-fix/prefer-const'], 'warn');
+  });
+
+  test('mode all: strips both fix and suggestions', () => {
+    const { Linter } = require('eslint');
+    const linter = new Linter();
+    const stripAll = plugin.createPlugin({ mode: 'all' });
+
+    // Fix stripped
+    const result = linter.verifyAndFix('let x = 1;', [
+      {
+        languageOptions: { ecmaVersion: 2024 },
+        plugins: { 'disable-autofix': stripAll },
+        rules: {
+          'disable-autofix/prefer-const': 'error',
+          'eol-last': 'off',
+          'no-unused-vars': 'off',
+        },
+      },
+    ]);
+    assert.equal(result.fixed, false);
+
+    // Suggestions stripped
+    const messages = linter.verify('console.log("test")', [
+      {
+        languageOptions: { ecmaVersion: 2024 },
+        plugins: { 'disable-autofix': stripAll },
+        rules: { 'disable-autofix/no-console': 'error', 'eol-last': 'off' },
+      },
+    ]);
+    assert.ok(
+      !messages[0].suggestions || messages[0].suggestions.length === 0,
+      'suggestions should be stripped in all mode',
+    );
   });
 });
