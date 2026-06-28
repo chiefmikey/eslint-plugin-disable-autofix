@@ -9,3 +9,4 @@ dist/LICENSE
 dist/README.md
 .eslintcache
 .stylelintcache
+.claude

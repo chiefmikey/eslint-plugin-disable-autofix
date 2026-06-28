@@ -30,20 +30,6 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
-  "overrides": {
-    "minimatch@^3": {
-      "brace-expansion": "^1.1.13"
-    },
-    "minimatch@^9": {
-      "brace-expansion": "^2.0.3"
-    },
-    "minimatch@^10": {
-      "brace-expansion": "^5.0.6"
-    },
-    "diff": "^4.0.4",
-    "picomatch@^2": "^2.3.2",
-    "picomatch@^4": "^4.0.4"
-  },
   "homepage": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
   "repository": "https://github.com/chiefmikey/eslint-plugin-disable-autofix",
   "bugs": "https://github.com/chiefmikey/eslint-plugin-disable-autofix/issues",
