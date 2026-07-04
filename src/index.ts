@@ -235,7 +235,7 @@ const discover = (): void => {
         if (entry === 'eslint-plugin-disable-autofix') {
           continue;
         }
-        if (entry.startsWith('@types') || entry.startsWith('@eslint')) {
+        if (entry === '@types' || entry.startsWith('@eslint')) {
           continue;
         }
 
