@@ -369,6 +369,12 @@ describe('plugin discovery', () => {
     expect(hasTypes).toBe(false);
     expect(hasEslint).toBe(false);
   });
+
+  it('includes @typescript-eslint plugin rules', () => {
+    const rules = Object.keys(disableAutofix.rules);
+
+    expect(rules.some((r) => r.startsWith('@typescript-eslint/'))).toBe(true);
+  });
 });
 
 // ---------------------------------------------------------------------------
